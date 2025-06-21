@@ -1,14 +1,15 @@
 import type { Edge, Node } from "@xyflow/react";
 import { hierarchy, tree } from "d3-hierarchy";
-import { v4 as uuidv4 } from "uuid"
+import { v4 as uuidv4 } from "uuid";
 import TreeNode from "../components/flow/TreeNode";
 
 const g = tree<HierarchyNode>();
 
-type TreeNodeWithChildren = TreeNode & { children: [HierarchyNode, HierarchyNode] };
-type DummyNode = Node & { data: { dummy: boolean } }
+type TreeNodeWithChildren = TreeNode & {
+  children: [HierarchyNode, HierarchyNode];
+};
+type DummyNode = Node & { data: { dummy: boolean } };
 type HierarchyNode = TreeNode | TreeNodeWithChildren | DummyNode;
-
 
 export const getLaidOutTree = (nodes: TreeNode[], edges: Edge[]) => {
   if (nodes.length === 0) return { nodes, edges };
@@ -25,15 +26,14 @@ export const getLaidOutTree = (nodes: TreeNode[], edges: Edge[]) => {
       position: { x: 0, y: 0 },
       data: { dummy: true },
     };
-  }
+  };
 
-  // Helper creates d3 hierarchy which requires each node to have 
+  // Helper creates d3 hierarchy which requires each node to have
   // an ordered children property
   const buildHierarchy = (node: TreeNode): HierarchyNode => {
-
     // base case: leaf node with intentionally undefined `children` property
     if (!node.data.leftId && !node.data.rightId) {
-      return { ...node }; 
+      return { ...node };
     }
 
     const leftChild = node.data.leftId
@@ -48,19 +48,21 @@ export const getLaidOutTree = (nodes: TreeNode[], edges: Edge[]) => {
       ...node,
       children: [leftChild, rightChild] as [HierarchyNode, HierarchyNode],
     };
-
-  }
+  };
 
   const rootNode = nodeMap.get("root");
   if (!rootNode) {
     throw new Error("Root node not found");
   }
-  const tree = hierarchy<HierarchyNode>(buildHierarchy(rootNode))
+  const tree = hierarchy<HierarchyNode>(buildHierarchy(rootNode));
 
-  // Overrides default separation function: https://d3js.org/d3-hierarchy/tree#tree_separation
-  g.separation(() => 1)
-  const layout = g.nodeSize([120, 120])(tree); // node size determines spacing
+  // TODO: Improve separation function to parameterize x 
+  // and y spacing for later use, also parameterize node size
   
+  // Overrides default separation function: https://d3js.org/d3-hierarchy/tree#tree_separation
+  g.separation(() => 1);
+  const layout = g.nodeSize([120, 120])(tree); // node size determines spacing
+
   return {
     nodes: layout
       .descendants()

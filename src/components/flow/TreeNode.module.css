@@ -1,46 +1,46 @@
 .treenode {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #6C63FF;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    border: 1px solid black;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #6c63ff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 1px solid black;
 }
 
 .selected {
-    border: 1px solid aquamarine;    
+  border: 1px solid aquamarine;
 }
 
 .addNode {
-    width: 30px;
-    height: 30px;
-    top: 70px;
-    padding: 0;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #3d3897;
-    border-radius: 50%;
-    border: 0 solid black;
+  width: 30px;
+  height: 30px;
+  top: 70px;
+  padding: 0;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3d3897;
+  border-radius: 50%;
+  border: 0 solid black;
 }
 
 .addNode:hover {
-    background-color: #413d99;
+  background-color: #413d99;
 }
 
 .addNode svg {
-    width: 20px;
+  width: 20px;
 }
 
 .left {
-    right: 50px;
+  right: 50px;
 }
 
 .right {
-    left: 50px;
+  left: 50px;
 }

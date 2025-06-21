@@ -75,7 +75,7 @@ button:focus-visible {
   top: 50%;
   left: 50%;
   opacity: 0;
-  pointer-events: 'none';
+  pointer-events: "none";
   /* right: auto; 
   bottom: auto;
   transform: translate(-50%, -50%); */
