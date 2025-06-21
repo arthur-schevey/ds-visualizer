@@ -58,10 +58,10 @@ export const getLaidOutTree = (nodes: TreeNode[], edges: Edge[]) => {
 
   // TODO: Improve separation function to parameterize x 
   // and y spacing for later use, also parameterize node size
-  
+
   // Overrides default separation function: https://d3js.org/d3-hierarchy/tree#tree_separation
   g.separation(() => 1);
-  const layout = g.nodeSize([120, 120])(tree); // node size determines spacing
+  const layout = g.nodeSize([90, 90])(tree); // node size determines spacing
 
   return {
     nodes: layout

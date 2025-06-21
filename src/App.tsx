@@ -18,11 +18,14 @@ const nodeTypes = {
 const selector = (state: TreeStore) => ({
   nodes: state.nodes,
   edges: state.edges,
+  nodeMap: state.nodeMap,
+  rootId: state.rootId,
   handleNodesChange: state.handleNodesChange,
+  handleNodesDelete: state.handleNodesDelete,
 });
 
 function App() {
-  const { nodes, edges, handleNodesChange } = useTreeStore(
+  const { nodes, edges, nodeMap, rootId, handleNodesChange, handleNodesDelete } = useTreeStore(
     useShallow(selector)
   );
 
@@ -32,6 +35,8 @@ function App() {
         nodes={nodes}
         edges={edges}
         onNodesChange={handleNodesChange}
+        onNodesDelete={handleNodesDelete}
+        deleteKeyCode={["Delete", "Backspace"]}
         // onEdgesChange={onEdgesChange}
         nodeClickDistance={30} // makes the app feel more responsive
         fitView // centers view on graph
