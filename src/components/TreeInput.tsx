@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useTreeStore } from "../store";
-import type TreeNode from "./TreeNode";
 import { deserializeLeetcode, serializeToLeetcode } from "../utils/helpers";
 
 export const TreeInput = () => {

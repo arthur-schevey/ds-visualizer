@@ -1,4 +1,3 @@
-import { create } from "zustand";
 import type TreeNode from "../components/TreeNode";
 
 export const getNodeMap = (nodes: TreeNode[]) =>

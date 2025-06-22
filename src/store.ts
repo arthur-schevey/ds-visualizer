@@ -1,12 +1,10 @@
 import {
-  addEdge,
   applyNodeChanges,
   type Edge,
   type NodeChange,
 } from "@xyflow/react";
 import TreeNode from "./components/TreeNode";
 import { create, type StateCreator } from "zustand";
-import { v4 as uuidv4 } from "uuid";
 import { getLaidOutTree } from "./utils/getLaidOutTree";
 import { temporal } from "zundo";
 import { devtools } from "zustand/middleware";
@@ -131,7 +129,7 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
 
     const newChild: TreeNode = {
       // construct new child
-      id: uuidv4(),
+      id: crypto.randomUUID(),
       className: "nopan", // disallows panning viewport when hovering over node
       type: "treeNode",
       position: { x: 0, y: 0 },
@@ -140,7 +138,7 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       data: { label: "child" },
     };
     const newEdge = {
-      id: uuidv4(),
+      id: crypto.randomUUID(),
       type: "straight",
       source: parentId,
       target: newChild.id,

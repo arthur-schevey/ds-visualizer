@@ -8,13 +8,13 @@ _Project goal: A "Swiss Army knife" for students and educators to easily create 
 
 - Construct binary tree
 - Modify node values
+- Node deletion + pruning
+- Undo-redo
+- Convert back and forth between tree and leetcode string
 
 ## Roadmap
 
-- Node deletion + pruning
-- Undo-redo
 - Implement persistent storage
-- Two-way conversion between leetcode string and binary tree
 - Layout/visual settings
 - Visualize traversal algorithms
 - Graph editor
@@ -29,7 +29,6 @@ _Project goal: A "Swiss Army knife" for students and educators to easily create 
 
 - [d3-hierarchy]() - Layouting library for tree-like structures
 - [clsx]() - Enables construction of conditional `className` strings
-- [uuid]() - For node ids
 - [zundo]() - Middleware provides support for temporal state management (undo/redo)
 - [react-hotkeys-hook]() - Enables hotkey listening
 ## Run Locally

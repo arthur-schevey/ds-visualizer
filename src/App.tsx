@@ -27,7 +27,7 @@ const selector = (state: TreeStore) => ({
 });
 
 function App() {
-  const { nodes, edges, rootId, handleNodesChange, handleNodesDelete } = useTreeStore(
+  const { nodes, edges, handleNodesChange, handleNodesDelete } = useTreeStore(
     useShallow(selector)
   );
 

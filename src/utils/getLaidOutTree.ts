@@ -1,6 +1,4 @@
-import type { Edge, Node } from "@xyflow/react";
 import { hierarchy, tree } from "d3-hierarchy";
-import { v4 as uuidv4 } from "uuid";
 import TreeNode from "../components/TreeNode";
 
 const g = tree<TreeNode>();
@@ -17,7 +15,7 @@ export const getLaidOutTree = (
   // Helper creates dummy node to assist with spacing
   const makeDummy = (): TreeNode => {
     return {
-      id: "__dummy__" + uuidv4(),
+      id: "__dummy__" + crypto.randomUUID(),
       type: "treeNode",
       position: { x: 0, y: 0 },
       data: {
