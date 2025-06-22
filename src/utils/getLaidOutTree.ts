@@ -1,7 +1,7 @@
 import type { Edge, Node } from "@xyflow/react";
 import { hierarchy, tree } from "d3-hierarchy";
 import { v4 as uuidv4 } from "uuid";
-import TreeNode from "../components/flow/TreeNode";
+import TreeNode from "../components/TreeNode";
 
 const g = tree<TreeNode>();
 

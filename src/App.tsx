@@ -8,11 +8,11 @@ import {
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
-import TreeNode from "./components/flow/TreeNode";
+import TreeNode from "./components/TreeNode";
 import { useTreeStore, type TreeStore } from "./store";
 import { useShallow } from "zustand/shallow";
 import { HotkeyBindings } from "./components/HotKeyBindings";
-import { useEffect } from "react";
+import { TreeInput } from "./components/TreeInput";
 
 const nodeTypes = {
   treeNode: TreeNode,
@@ -21,12 +21,13 @@ const nodeTypes = {
 const selector = (state: TreeStore) => ({
   nodes: state.nodes,
   edges: state.edges,
+  rootId: state.rootId,
   handleNodesChange: state.handleNodesChange,
   handleNodesDelete: state.handleNodesDelete,
 });
 
 function App() {
-  const { nodes, edges, handleNodesChange, handleNodesDelete } = useTreeStore(
+  const { nodes, edges, rootId, handleNodesChange, handleNodesDelete } = useTreeStore(
     useShallow(selector)
   );
 
@@ -36,6 +37,7 @@ function App() {
     handleNodesChange(changes)
     resume()
   }
+
 
   // Temporary: For use debugging and watching the undo/redo stack over time
   // useEffect(() => {
@@ -51,11 +53,13 @@ function App() {
         onNodesChange={tempHandleNodesChange}
         onNodesDelete={handleNodesDelete}
         deleteKeyCode={["Delete", "Backspace"]}
-        // onEdgesChange={onEdgesChange}
-        nodeClickDistance={30} // makes the app feel more responsive
+        nodeClickDistance={30} // makes the graph feel more responsive
         fitView // centers view on graph
         nodeTypes={nodeTypes}
       >
+        <Panel position="top-center">
+          <TreeInput/>
+        </Panel>
         <Controls />
         <Background color="#ccc" variant={BackgroundVariant.Dots} />
       </ReactFlow>

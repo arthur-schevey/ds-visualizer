@@ -2,7 +2,7 @@ import { Handle, Position, type Node, type NodeProps } from "@xyflow/react";
 import { useEffect, useRef, useState } from "react";
 import styles from "./TreeNode.module.css";
 import clsx from "clsx";
-import { useTreeStore } from "../../store";
+import { useTreeStore } from "../store";
 import { useShallow } from "zustand/shallow";
 
 type TreeNode = Node<

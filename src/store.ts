@@ -1,10 +1,16 @@
-import { applyNodeChanges, type Edge, type NodeChange } from "@xyflow/react";
-import TreeNode from "./components/flow/TreeNode";
+import {
+  addEdge,
+  applyNodeChanges,
+  type Edge,
+  type NodeChange,
+} from "@xyflow/react";
+import TreeNode from "./components/TreeNode";
 import { create, type StateCreator } from "zustand";
 import { v4 as uuidv4 } from "uuid";
 import { getLaidOutTree } from "./utils/getLaidOutTree";
-import { temporal, type TemporalState } from "zundo";
+import { temporal } from "zundo";
 import { devtools } from "zustand/middleware";
+import { getNodeMap } from "./utils/helpers";
 
 export interface TreeStore {
   nodes: TreeNode[];
@@ -15,6 +21,7 @@ export interface TreeStore {
   handleNodesDelete: (deleted: TreeNode[]) => void;
   updateNodeLabel: (id: string, label: string) => void;
   nodeAddChild: (parentId: string, side: "left" | "right") => void;
+  setTree: (nodes: TreeNode[], rootId: string) => void;
 }
 
 const initRootNode: TreeNode = {
@@ -26,22 +33,23 @@ const initRootNode: TreeNode = {
   data: { label: "1" },
 };
 
-const getNodeMap = (nodes: TreeNode[]) =>
-  Object.fromEntries(nodes.map((n) => [n.id, n]));
-
 const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
   nodes: [initRootNode],
   edges: [],
   rootId: initRootNode.id,
 
   handleNodesChange: (changes) => {
-    set({
-      nodes: applyNodeChanges<TreeNode>(changes, get().nodes),
-    }, undefined, 'flowNodeChange');
+    set(
+      {
+        nodes: applyNodeChanges<TreeNode>(changes, get().nodes),
+      },
+      undefined,
+      "flowNodeChange"
+    );
   },
   handleNodesDelete: (deleted) => {
     const { nodes, edges } = get();
-    const nodeMap = getNodeMap(nodes)
+    const nodeMap = getNodeMap(nodes);
 
     // To prune, we need to obtain a list of descendants
     const collectDescendants = (
@@ -89,14 +97,18 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       parentMap.has(node.id) ? parentMap.get(node.id)! : node
     );
 
-    set({
-      nodes: finalNodes,
-      edges: updatedEdges,
-    }, undefined, 'deleteNode');
+    set(
+      {
+        nodes: finalNodes,
+        edges: updatedEdges,
+      },
+      undefined,
+      "deleteNode"
+    );
   },
   updateNodeLabel: (id, label) => {
     const { nodes } = get();
-    const nodeMap = getNodeMap(nodes)
+    const nodeMap = getNodeMap(nodes);
 
     const updatedNode = nodeMap[id];
     updatedNode.data.label = label;
@@ -105,15 +117,20 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       node.id === id ? updatedNode : node
     );
 
-    set({
-      nodes: updatedNodes,
-    }, undefined, 'updateLabel');
+    set(
+      {
+        nodes: updatedNodes,
+      },
+      undefined,
+      "updateLabel"
+    );
   },
   nodeAddChild: (parentId, side) => {
     const { nodes, edges, rootId } = get();
-    const nodeMap = getNodeMap(nodes)
+    const nodeMap = getNodeMap(nodes);
 
-    const newChild: TreeNode = { // construct new child
+    const newChild: TreeNode = {
+      // construct new child
       id: uuidv4(),
       className: "nopan", // disallows panning viewport when hovering over node
       type: "treeNode",
@@ -135,30 +152,61 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
         [`${side}Id`]: newChild.id,
       },
       selected: false,
-    }
+    };
 
     // Update parent and add child
     const updatedNodes = nodes
       .map((node) => (node.id === parentId ? updatedParent : node))
       .concat(newChild);
 
-    const updatedNodeMap = getNodeMap(updatedNodes)
+    const updatedNodeMap = getNodeMap(updatedNodes);
 
     // TODO: getLaidOutTree needs to be refactored to accept only nodeMap (and nodes if needed)
     // its completely useless to pass edges. Additionally, getLaidOutTree needs to be cleaned up
     // + types improved.
     const laidOutNodes = getLaidOutTree(updatedNodes, updatedNodeMap, rootId);
 
+    set(
+      {
+        nodes: laidOutNodes,
+        edges: edges.concat(newEdge),
+      },
+      undefined,
+      "addChild"
+    );
+  },
+  setTree: (nodes, rootId) => {
+    const edges: Edge[] = [];
+
+    const createEdge = (source: string, target: string): Edge => {
+      return {
+        id: crypto.randomUUID(),
+        source: source,
+        target: target,
+        type: "straight",
+      };
+    };
+
+    // Generate edges from node relations
+    nodes.forEach((node) => {
+      if (node.data.leftId) {
+        edges.push(createEdge(node.id, node.data.leftId));
+      }
+
+      if (node.data.rightId) {
+        edges.push(createEdge(node.id, node.data.rightId));
+      }
+    });
+
     set({
-      nodes: laidOutNodes,
-      edges: edges.concat(newEdge),
-    }, undefined, 'addChild');
+      nodes,
+      edges,
+      rootId,
+    })
   },
 });
 
 export const useTreeStore = create<TreeStore>()(
   // Utilizes temporal middleware from zundo to allow undo/redo
-  devtools(temporal(createTreeStore, {
-
-  }))
+  devtools(temporal(createTreeStore, {}))
 );
