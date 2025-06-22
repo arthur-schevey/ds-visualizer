@@ -30,7 +30,8 @@ _Project goal: A "Swiss Army knife" for students and educators to easily create 
 - [d3-hierarchy]() - Layouting library for tree-like structures
 - [clsx]() - Enables construction of conditional `className` strings
 - [uuid]() - For node ids
-
+- [zundo]() - Middleware provides support for temporal state management (undo/redo)
+- [react-hotkeys-hook]() - Enables hotkey listening
 ## Run Locally
 
 Clone the project

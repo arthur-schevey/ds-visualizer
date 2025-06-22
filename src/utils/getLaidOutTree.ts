@@ -3,74 +3,59 @@ import { hierarchy, tree } from "d3-hierarchy";
 import { v4 as uuidv4 } from "uuid";
 import TreeNode from "../components/flow/TreeNode";
 
-const g = tree<HierarchyNode>();
+const g = tree<TreeNode>();
 
-type TreeNodeWithChildren = TreeNode & {
-  children: [HierarchyNode, HierarchyNode];
-};
-type DummyNode = Node & { data: { dummy: boolean } };
-type HierarchyNode = TreeNode | TreeNodeWithChildren | DummyNode;
-
-export const getLaidOutTree = (nodes: TreeNode[], edges: Edge[]) => {
-  if (nodes.length === 0) return { nodes, edges };
+export const getLaidOutTree = (
+  nodes: TreeNode[],
+  nodeMap: Record<string, TreeNode>,
+  rootId: string
+): TreeNode[] => {
+  if (nodes.length === 0) return nodes; // may be redundant
 
   // WARNING: may need to set hidden property on dummies
 
-  // Generate node map (id -> node)
-  const nodeMap = new Map<string, TreeNode>(nodes.map((n) => [n.id, { ...n }]));
-
   // Helper creates dummy node to assist with spacing
-  const makeDummy = () => {
+  const makeDummy = (): TreeNode => {
     return {
-      id: uuidv4(),
+      id: "__dummy__" + uuidv4(),
+      type: "treeNode",
       position: { x: 0, y: 0 },
-      data: { dummy: true },
+      data: {
+        leftId: undefined,
+        rightId: undefined,
+        label: "",
+        dummy: true,
+      },
     };
   };
 
-  // Helper creates d3 hierarchy which requires each node to have
-  // an ordered children property
-  const buildHierarchy = (node: TreeNode): HierarchyNode => {
-    // base case: leaf node with intentionally undefined `children` property
-    if (!node.data.leftId && !node.data.rightId) {
-      return { ...node };
-    }
+  const getChildren = (datum: TreeNode): TreeNode[] => {
+    if (!datum.data.leftId && !datum.data.rightId) return []; // leaf node, don't traverse
+    if (datum.data.label === "dummy") return []; // dummy node, don't traverse
 
-    const leftChild = node.data.leftId
-      ? buildHierarchy(nodeMap.get(node.data.leftId)!) // confident that map will always return a value
+    const left = datum.data.leftId ? nodeMap[datum.data.leftId] : makeDummy();
+    const right = datum.data.rightId
+      ? nodeMap[datum.data.rightId]
       : makeDummy();
-
-    const rightChild = node.data.rightId
-      ? buildHierarchy(nodeMap.get(node.data.rightId)!)
-      : makeDummy();
-
-    return {
-      ...node,
-      children: [leftChild, rightChild] as [HierarchyNode, HierarchyNode],
-    };
+    return [left, right];
   };
 
-  const rootNode = nodeMap.get("root");
-  if (!rootNode) {
-    throw new Error("Root node not found");
-  }
-  const tree = hierarchy<HierarchyNode>(buildHierarchy(rootNode));
+  const root = nodeMap[rootId];
+  if (!root) throw new Error("Root node is missing");
+  const tree = hierarchy<TreeNode>(root, getChildren);
 
-  // TODO: Improve separation function to parameterize x 
+  // TODO: Improve separation function to parameterize x
   // and y spacing for later use, also parameterize node size
 
   // Overrides default separation function: https://d3js.org/d3-hierarchy/tree#tree_separation
   g.separation(() => 1);
   const layout = g.nodeSize([90, 90])(tree); // node size determines spacing
 
-  return {
-    nodes: layout
-      .descendants()
-      .filter((node) => node.data.data.dummy == undefined) // remove dummy nodes
-      .map((node) => ({
-        ...node.data,
-        position: { x: node.x, y: node.y },
-      })),
-    edges,
-  };
+  return layout
+    .descendants()
+    .filter((node) => !node.data.data.dummy) // remove dummy nodes
+    .map((node) => ({
+      ...node.data,
+      position: { x: node.x, y: node.y },
+    })) as TreeNode[];
 };

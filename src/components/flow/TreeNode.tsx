@@ -6,7 +6,7 @@ import { useTreeStore } from "../../store";
 import { useShallow } from "zustand/shallow";
 
 type TreeNode = Node<
-  { label: string; leftId?: string; rightId?: string },
+  { label: string; leftId?: string; rightId?: string, dummy?: boolean },
   "treeNode"
 >;
 
@@ -25,7 +25,6 @@ const TreeNode = ({ id, selected, data }: NodeProps<TreeNode>) => {
   // Handles changing editing state
   useEffect(() => {
     if (!inputRef.current) return;
-    console.log("set");
 
     if (editing) {
       inputRef.current.focus();
@@ -62,10 +61,6 @@ const TreeNode = ({ id, selected, data }: NodeProps<TreeNode>) => {
         handleBlur(false);
         break;
     }
-  };
-
-  const handleAddNode = (side: "left" | "right") => {
-    nodeAddChild(id, side)
   };
 
   return (
