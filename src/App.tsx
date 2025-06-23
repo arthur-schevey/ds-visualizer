@@ -1,6 +1,5 @@
 import {
   ReactFlow,
-  Controls,
   BackgroundVariant,
   Background,
   Panel,
@@ -60,7 +59,6 @@ function App() {
         <Panel position="top-center">
           <TreeInput/>
         </Panel>
-        <Controls />
         <Background color="#ccc" variant={BackgroundVariant.Dots} />
       </ReactFlow>
     </div>

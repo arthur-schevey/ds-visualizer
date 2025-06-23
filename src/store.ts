@@ -1,8 +1,4 @@
-import {
-  applyNodeChanges,
-  type Edge,
-  type NodeChange,
-} from "@xyflow/react";
+import { applyNodeChanges, type Edge, type NodeChange } from "@xyflow/react";
 import TreeNode from "./components/TreeNode";
 import { create, type StateCreator } from "zustand";
 import { getLaidOutTree } from "./utils/getLaidOutTree";
@@ -37,13 +33,9 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
   rootId: initRootNode.id,
 
   handleNodesChange: (changes) => {
-    set(
-      {
-        nodes: applyNodeChanges<TreeNode>(changes, get().nodes),
-      },
-      undefined,
-      "flowNodeChange"
-    );
+    set({
+      nodes: applyNodeChanges<TreeNode>(changes, get().nodes),
+    });
   },
   handleNodesDelete: (deleted) => {
     const { nodes, edges } = get();
@@ -95,14 +87,10 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       parentMap.has(node.id) ? parentMap.get(node.id)! : node
     );
 
-    set(
-      {
-        nodes: finalNodes,
-        edges: updatedEdges,
-      },
-      undefined,
-      "deleteNode"
-    );
+    set({
+      nodes: finalNodes,
+      edges: updatedEdges,
+    });
   },
   updateNodeLabel: (id, label) => {
     const { nodes } = get();
@@ -115,13 +103,9 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       node.id === id ? updatedNode : node
     );
 
-    set(
-      {
-        nodes: updatedNodes,
-      },
-      undefined,
-      "updateLabel"
-    );
+    set({
+      nodes: updatedNodes,
+    });
   },
   nodeAddChild: (parentId, side) => {
     const { nodes, edges, rootId } = get();
@@ -164,14 +148,10 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
     // + types improved.
     const laidOutNodes = getLaidOutTree(updatedNodes, updatedNodeMap, rootId);
 
-    set(
-      {
-        nodes: laidOutNodes,
-        edges: edges.concat(newEdge),
-      },
-      undefined,
-      "addChild"
-    );
+    set({
+      nodes: laidOutNodes,
+      edges: edges.concat(newEdge),
+    });
   },
   setTree: (nodes, rootId) => {
     const edges: Edge[] = [];
@@ -200,7 +180,7 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       nodes,
       edges,
       rootId,
-    })
+    });
   },
 });
 
