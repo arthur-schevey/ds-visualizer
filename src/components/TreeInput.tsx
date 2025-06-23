@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTreeStore } from "../store";
 import { serializeToLeetcode } from "../utils/helpers";
-import { Button, Cascader, Input } from "antd";
+import { Button, Cascader, Input, notification } from "antd";
 import { MdOutlineContentCopy } from "react-icons/md";
-
 
 interface Option {
   value: string;
@@ -12,18 +11,14 @@ interface Option {
 
 const options: Option[] = [
   {
-    value: 'Leetcode',
-    label: 'leetcode-s',
-  },
-    {
-    value: 'Leetcaode',
-    label: 'leetcdode-s',
+    value: "leetcode",
+    label: "Leetcode",
   },
 ];
 
 export const TreeInput = () => {
   const { nodes, rootId } = useTreeStore();
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
 
   // Update input whenever the tree changes
   useEffect(() => {
@@ -39,6 +34,22 @@ export const TreeInput = () => {
   //   const { nodes: newNodes, rootId: newRootId } = deserializeLeetcode(inputValue);
   //   setTree(newNodes, newRootId);
   // };
+
+  const copyNotification = () => {
+    notification.success({
+      message: "Copied to clipboard",
+      duration: 1.5,
+    });
+  };
+
+  const copyErrNotification = (err: Error) => {
+    notification.success({
+      message: "Error copying to clipboard",
+      description: "Error:" + err.message,
+      showProgress: true,
+      duration: 4,
+    });
+  }
 
   return (
     <div
@@ -58,16 +69,31 @@ export const TreeInput = () => {
       }}
     >
       <Input
-        addonBefore={<Cascader placeholder="Leetcode" options={options} style={{ width: 150 }} />}
+        addonBefore={
+          <Cascader
+            placeholder="Leetcode"
+            options={options}
+            style={{ width: 150 }}
+          />
+        }
         size="large"
         variant="filled"
         value={inputValue}
-        style={{width: 900}}
+        style={{ width: 900 }}
         onChange={handleChange}
         defaultValue="mysite"
       />
-      <Button type="primary" icon={<MdOutlineContentCopy/>}/>
+      <Button
+        type="primary"
+        size="large"
+        onClick={() =>
+          navigator.clipboard
+            .writeText(inputValue)
+            .then(copyNotification)
+            .catch((err) => copyErrNotification(err))
+        }
+        icon={<MdOutlineContentCopy fontSize={"24px"} />}
+      />
     </div>
-
   );
 };
