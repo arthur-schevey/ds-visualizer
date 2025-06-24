@@ -6,14 +6,14 @@ import { useTreeStore } from "../store";
 import { useShallow } from "zustand/shallow";
 
 type TreeNode = Node<
-  { label: string; leftId?: string; rightId?: string, dummy?: boolean },
+  { value: string; leftId?: string; rightId?: string, dummy?: boolean },
   "treeNode"
 >;
 
 const TreeNode = ({ id, selected, data }: NodeProps<TreeNode>) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null); // reference to component so it can be immediately focused in handleDoubleClick
-  const inputOriginalVal = useRef(data.label); // for use with `esc`
+  const inputOriginalVal = useRef(data.value); // for use with `esc`
 
   const { updateNodeLabel, nodeAddChild } = useTreeStore(
     useShallow((state) => ({
@@ -71,9 +71,9 @@ const TreeNode = ({ id, selected, data }: NodeProps<TreeNode>) => {
       className={clsx(styles.treenode, selected && styles.selected)}
     >
       {editing ? (
-        <input ref={inputRef} defaultValue={data.label}></input>
+        <input ref={inputRef} defaultValue={data.value}></input>
       ) : (
-        data.label
+        data.value
       )}
 
       {selected && (

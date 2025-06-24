@@ -21,7 +21,7 @@ export const getLaidOutTree = (
       data: {
         leftId: undefined,
         rightId: undefined,
-        label: "",
+        value: "",
         dummy: true,
       },
     };
@@ -29,7 +29,7 @@ export const getLaidOutTree = (
 
   const getChildren = (datum: TreeNode): TreeNode[] => {
     if (!datum.data.leftId && !datum.data.rightId) return []; // leaf node, don't traverse
-    if (datum.data.label === "dummy") return []; // dummy node, don't traverse
+    if (datum.data.value === "dummy") return []; // dummy node, don't traverse
 
     const left = datum.data.leftId ? nodeMap[datum.data.leftId] : makeDummy();
     const right = datum.data.rightId

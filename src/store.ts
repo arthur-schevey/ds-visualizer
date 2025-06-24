@@ -10,6 +10,7 @@ export interface TreeStore {
   nodes: TreeNode[];
   edges: Edge[];
   rootId: string;
+  nodeCounter: number;
 
   handleNodesChange: (changes: NodeChange<TreeNode>[]) => void;
   handleNodesDelete: (deleted: TreeNode[]) => void;
@@ -24,13 +25,14 @@ const initRootNode: TreeNode = {
   type: "treeNode",
   deletable: false, // must always have root node
   position: { x: 0, y: 0 },
-  data: { label: "1" },
+  data: { value: "0" },
 };
 
 const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
   nodes: [initRootNode],
   edges: [],
   rootId: initRootNode.id,
+  nodeCounter: 1,
 
   handleNodesChange: (changes) => {
     set({
@@ -97,7 +99,7 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
     const nodeMap = getNodeMap(nodes);
 
     const updatedNode = nodeMap[id];
-    updatedNode.data.label = label;
+    updatedNode.data.value = label;
 
     const updatedNodes = nodes.map((node) =>
       node.id === id ? updatedNode : node
@@ -108,7 +110,7 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
     });
   },
   nodeAddChild: (parentId, side) => {
-    const { nodes, edges, rootId } = get();
+    const { nodes, edges, rootId, nodeCounter } = get();
     const nodeMap = getNodeMap(nodes);
 
     const newChild: TreeNode = {
@@ -119,7 +121,7 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       position: { x: 0, y: 0 },
       selected: true,
       // parentId: parentId, // this could be a good feature which makes child positioning relative and follow its parent, however this would conflict with the current layouting system to due relative vs absolute position switch
-      data: { label: "child" },
+      data: { value: nodeCounter.toString() },
     };
     const newEdge = {
       id: crypto.randomUUID(),
@@ -151,6 +153,7 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
     set({
       nodes: laidOutNodes,
       edges: edges.concat(newEdge),
+      nodeCounter: nodeCounter + 1,
     });
   },
   setTree: (nodes, rootId) => {
