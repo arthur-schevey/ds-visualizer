@@ -3,35 +3,15 @@ import { useTreeStore } from "../store";
 import { deserialize, serialize } from "../utils/helpers";
 import {
   Button,
-  Cascader,
   Input,
-  message,
   notification,
   Popconfirm,
   Select,
-  type CascaderProps,
-  type SelectProps,
 } from "antd";
 import { MdClear, MdOutlineContentCopy } from "react-icons/md";
 import type { TreeFormat } from "../types/serialization";
 import { IoEnterOutline } from "react-icons/io5";
 import styles from "./TreeInputHeader.module.css"
-
-interface Option {
-  value: TreeFormat;
-  label: string;
-}
-
-const options: Option[] = [
-  {
-    value: "leetcode-strict",
-    label: "LeetCode",
-  },
-  {
-    value: "leetcode",
-    label: "LeetCode (allow non-numeric)",
-  },
-];
 
 export const TreeInput = () => {
   const { nodes, rootId } = useTreeStore();

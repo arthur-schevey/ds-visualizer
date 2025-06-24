@@ -3,7 +3,7 @@ import TreeNode from "./components/TreeNode";
 import { create, type StateCreator } from "zustand";
 import { getLaidOutTree } from "./utils/getLaidOutTree";
 import { temporal } from "zundo";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 import { getNodeMap } from "./utils/helpers";
 
 export interface TreeStore {
@@ -195,11 +195,12 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       edges: [],
       rootId: initRootNode.id,
       nodeCounter: 1,
-    })
-  }
+    });
+  },
 });
 
 export const useTreeStore = create<TreeStore>()(
+  // Utilizes persist middleware to store tree data in local storage
   // Utilizes temporal middleware from zundo to allow undo/redo
-  devtools(temporal(createTreeStore, {}))
+  persist(devtools(temporal(createTreeStore, {})), { name: "tree-storage" })
 );

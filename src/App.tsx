@@ -12,7 +12,7 @@ import { useTreeStore, type TreeStore } from "./store";
 import { useShallow } from "zustand/shallow";
 import { HotkeyBindings } from "./components/HotKeyBindings";
 import { TreeInput } from "./components/TreeInputHeader";
-import { Space, Tag, Tooltip } from "antd";
+import { Tag, Tooltip } from "antd";
 import { AiOutlineGithub } from "react-icons/ai";
 import { APP_VERSION } from "./version";
 
