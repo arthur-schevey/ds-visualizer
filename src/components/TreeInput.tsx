@@ -7,11 +7,12 @@ import {
   Input,
   message,
   notification,
+  Popconfirm,
   Select,
   type CascaderProps,
   type SelectProps,
 } from "antd";
-import { MdOutlineContentCopy } from "react-icons/md";
+import { MdClear, MdOutlineContentCopy } from "react-icons/md";
 import type { TreeFormat } from "../types/serialization";
 import { IoEnterOutline } from "react-icons/io5";
 
@@ -36,7 +37,7 @@ export const TreeInput = () => {
   const [inputValue, setInputValue] = useState("");
   const [inputIsValid, setInputIsValid] = useState(true);
   const [format, setFormat] = useState<TreeFormat>("leetcode-strict");
-  const { setTree } = useTreeStore();
+  const { setTree, resetTree } = useTreeStore();
 
   // Update input whenever the tree or format changes
   useEffect(() => {
@@ -47,7 +48,7 @@ export const TreeInput = () => {
         } catch (error) {
           setInputValue(serialize("leetcode", nodes, rootId));
           setFormat("leetcode");
-          leetcodeWarnNotification()
+          leetcodeWarnNotification();
           console.error(error);
         }
         break;
@@ -101,11 +102,12 @@ export const TreeInput = () => {
   const leetcodeWarnNotification = () => {
     notification.warning({
       message: "Format changed",
-      description: "LeetCode strings do not support non-numeric node values so your format has been automatically switched to allow quotes. If you want to return to the standard LeetCode format, remove any non-numeric values.",
+      description:
+        "LeetCode strings do not support non-numeric node values so your format has been automatically switched to allow quotes. If you want to return to the standard LeetCode format, remove any non-numeric values.",
       showProgress: true,
       duration: 9,
-    })
-  }
+    });
+  };
 
   return (
     <div
@@ -136,7 +138,7 @@ export const TreeInput = () => {
             style={{ width: 180 }}
           />
         }
-        status={ !inputIsValid ? "warning" : undefined }
+        status={!inputIsValid ? "warning" : undefined}
         suffix={<IoEnterOutline fontSize={"24px"} />}
         size="large"
         variant="outlined"
@@ -157,6 +159,15 @@ export const TreeInput = () => {
         }
         icon={<MdOutlineContentCopy fontSize={"24px"} />}
       />
+
+      <Popconfirm title="Reset tree?" onConfirm={resetTree} okText="Yes">
+        <Button
+          danger
+          type="default"
+          size="large"
+          icon={<MdClear fontSize={"24px"} />}
+        />
+      </Popconfirm>
     </div>
   );
 };

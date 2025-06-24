@@ -17,6 +17,7 @@ export interface TreeStore {
   updateNodeLabel: (id: string, label: string) => void;
   nodeAddChild: (parentId: string, side: "left" | "right") => void;
   setTree: (nodes: TreeNode[], rootId: string) => void;
+  resetTree: () => void;
 }
 
 const initRootNode: TreeNode = {
@@ -188,6 +189,14 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       rootId,
     });
   },
+  resetTree: () => {
+    set({
+      nodes: [initRootNode],
+      edges: [],
+      rootId: initRootNode.id,
+      nodeCounter: 1,
+    })
+  }
 });
 
 export const useTreeStore = create<TreeStore>()(
