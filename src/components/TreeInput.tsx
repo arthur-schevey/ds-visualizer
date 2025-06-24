@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTreeStore } from "../store";
-import { serialize } from "../utils/helpers";
+import { deserialize, serialize } from "../utils/helpers";
 import {
   Button,
   Cascader,
@@ -34,21 +34,21 @@ const options: Option[] = [
 export const TreeInput = () => {
   const { nodes, rootId } = useTreeStore();
   const [inputValue, setInputValue] = useState("");
+  const [inputIsValid, setInputIsValid] = useState(true);
   const [format, setFormat] = useState<TreeFormat>("leetcode-strict");
+  const { setTree } = useTreeStore();
 
-  // Update input whenever the tree changes
+  // Update input whenever the tree or format changes
   useEffect(() => {
     switch (format) {
       case "leetcode-strict":
         try {
           setInputValue(serialize("leetcode-strict", nodes, rootId));
-        } catch (err) {
+        } catch (error) {
           setInputValue(serialize("leetcode", nodes, rootId));
-          setFormat("leetcode")
-          message.warning(
-            "LeetCode strings do not support non-numeric node values so your format has been automatically switched to allow quotes. If you want to return to the standard LeetCode format, remove any non-numeric values.",
-            8 // seconds
-          );
+          setFormat("leetcode");
+          leetcodeWarnNotification()
+          console.error(error);
         }
         break;
       case "leetcode":
@@ -57,14 +57,30 @@ export const TreeInput = () => {
     }
   }, [nodes, rootId, format]);
 
+  const applyDeserialization = () => {
+    try {
+      const result = deserialize(format, inputValue);
+      setTree(result.nodes, result.rootId);
+      setInputIsValid(true);
+    } catch (error) {
+      console.error(error);
+      setInputIsValid(false);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
-  // const handleSubmit = () => {
-  //   const { nodes: newNodes, rootId: newRootId } = deserializeLeetcode(inputValue);
-  //   setTree(newNodes, newRootId);
-  // };
+  const handleBlur = () => {
+    applyDeserialization();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      applyDeserialization();
+    }
+  };
 
   const copyNotification = () => {
     notification.success({
@@ -81,6 +97,15 @@ export const TreeInput = () => {
       duration: 4,
     });
   };
+
+  const leetcodeWarnNotification = () => {
+    notification.warning({
+      message: "Format changed",
+      description: "LeetCode strings do not support non-numeric node values so your format has been automatically switched to allow quotes. If you want to return to the standard LeetCode format, remove any non-numeric values.",
+      showProgress: true,
+      duration: 9,
+    })
+  }
 
   return (
     <div
@@ -111,16 +136,15 @@ export const TreeInput = () => {
             style={{ width: 180 }}
           />
         }
-        suffix={
-          <IoEnterOutline fontSize={"24px"} />
-          // <Button icon={} type="text" variant="text" size="small"/>
-        }
+        status={ !inputIsValid ? "warning" : undefined }
+        suffix={<IoEnterOutline fontSize={"24px"} />}
         size="large"
         variant="outlined"
         value={inputValue}
         style={{ width: 900 }}
         onChange={handleChange}
-        defaultValue="mysite"
+        onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
       />
       <Button
         type="primary"

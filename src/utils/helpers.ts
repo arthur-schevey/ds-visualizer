@@ -11,13 +11,13 @@ export const serialize = (
 ): string => {
   switch (format) {
     case "leetcode-strict":
-      return serializeToLeetcodeStrict(nodes, rootId)
+      return serializeToLeetcodeStrict(nodes, rootId);
     case "leetcode":
-      return serializeToLeetcode(nodes, rootId)
+      return serializeToLeetcode(nodes, rootId);
   }
 };
 
-export const serializeToLeetcode = (nodes: TreeNode[], rootId: string) => {
+const serializeToLeetcode = (nodes: TreeNode[], rootId: string) => {
   const nodeMap = getNodeMap(nodes);
   const result: (string | null)[] = [];
   const queue: (string | null)[] = [rootId];
@@ -34,7 +34,7 @@ export const serializeToLeetcode = (nodes: TreeNode[], rootId: string) => {
 
     // If currently traversed node is null, push to result and move to next iteration
     const node = nodeMap[curId!];
-    result.push(node.data.value);
+    result.push(node.data.value.toString()); // Force string
     queue.push(node.data.leftId ?? null);
     queue.push(node.data.rightId ?? null);
   }
@@ -45,10 +45,7 @@ export const serializeToLeetcode = (nodes: TreeNode[], rootId: string) => {
   return JSON.stringify(result);
 };
 
-export const serializeToLeetcodeStrict = (
-  nodes: TreeNode[],
-  rootId: string
-) => {
+const serializeToLeetcodeStrict = (nodes: TreeNode[], rootId: string) => {
   const serialized = serializeToLeetcode(nodes, rootId);
 
   const parsed = JSON.parse(serialized);
@@ -63,10 +60,24 @@ export const serializeToLeetcodeStrict = (
       if (!Number.isNaN(num)) return num;
     }
 
-    throw new Error('`Invalid value at index ${i}: expected numeric or null`');
+    throw new Error(`Invalid value at index ${i}: expected numeric or null`);
   });
 
   return JSON.stringify(result);
+};
+
+export const deserialize = (
+  format: TreeFormat,
+  s: string
+): {
+  nodes: TreeNode[];
+  rootId: string;
+} => {
+  if (format === "leetcode" || format === "leetcode-strict") {    
+    return deserializeLeetcode(s);
+  } else {
+    throw Error("Was not able to parse string");
+  }
 };
 
 const createNode = (value: string): TreeNode => {
@@ -80,7 +91,7 @@ const createNode = (value: string): TreeNode => {
   };
 };
 
-export const deserializeLeetcode = (
+const deserializeLeetcode = (
   s: string
 ): {
   nodes: TreeNode[];
@@ -125,6 +136,7 @@ export const deserializeLeetcode = (
     }
     i += 1;
   }
-
+  console.log(nodes, rootId);
+  
   return { nodes, rootId };
 };

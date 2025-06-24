@@ -179,8 +179,11 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       }
     });
 
+    // Layout the nodes
+    const laidOutNodes = getLaidOutTree(nodes, getNodeMap(nodes), rootId);
+
     set({
-      nodes,
+      nodes: laidOutNodes,
       edges,
       rootId,
     });
