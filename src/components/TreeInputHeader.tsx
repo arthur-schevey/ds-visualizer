@@ -15,6 +15,7 @@ import {
 import { MdClear, MdOutlineContentCopy } from "react-icons/md";
 import type { TreeFormat } from "../types/serialization";
 import { IoEnterOutline } from "react-icons/io5";
+import styles from "./TreeInputHeader.module.css"
 
 interface Option {
   value: TreeFormat;
@@ -111,20 +112,7 @@ export const TreeInput = () => {
 
   return (
     <div
-      style={{
-        position: "fixed",
-        top: "20px",
-        left: "50%",
-        transform: "translateX(-50%)",
-        backgroundColor: "rgba(255, 255, 255, 0.85)",
-        backdropFilter: "blur(8px)",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.25)",
-        borderRadius: "12px",
-        padding: "8px 16px",
-        display: "flex",
-        alignItems: "center",
-        gap: "12px",
-      }}
+      className={styles.header}
     >
       <Input
         addonBefore={

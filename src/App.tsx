@@ -11,7 +11,10 @@ import TreeNode from "./components/TreeNode";
 import { useTreeStore, type TreeStore } from "./store";
 import { useShallow } from "zustand/shallow";
 import { HotkeyBindings } from "./components/HotKeyBindings";
-import { TreeInput } from "./components/TreeInput";
+import { TreeInput } from "./components/TreeInputHeader";
+import { Space, Tag, Tooltip } from "antd";
+import { AiOutlineGithub } from "react-icons/ai";
+import { APP_VERSION } from "./version";
 
 const nodeTypes = {
   treeNode: TreeNode,
@@ -32,11 +35,10 @@ function App() {
 
   const { pause, resume } = useTreeStore.temporal.getState();
   const tempHandleNodesChange = (changes: NodeChange<TreeNode>[]) => {
-    pause()
-    handleNodesChange(changes)
-    resume()
-  }
-
+    pause();
+    handleNodesChange(changes);
+    resume();
+  };
 
   // Temporary: For use debugging and watching the undo/redo stack over time
   // useEffect(() => {
@@ -45,7 +47,7 @@ function App() {
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
-      <HotkeyBindings/>
+      <HotkeyBindings />
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -55,9 +57,27 @@ function App() {
         nodeClickDistance={30} // makes the graph feel more responsive
         fitView // centers view on graph
         nodeTypes={nodeTypes}
+        proOptions={{ hideAttribution: true }}
       >
+        {/* Header */}
         <Panel position="top-center">
-          <TreeInput/>
+          <TreeInput />
+        </Panel>
+
+        {/* Version and GitHub link */}
+        <Panel position="bottom-right">
+          <Tooltip title="View on GitHub">
+            <a
+              href="https://github.com/arthur-schevey/ds-visualizer"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub Repository"
+            >
+              <Tag icon={<AiOutlineGithub style={{ fontSize: "20px" }} />} />
+            </a>
+          </Tooltip>
+
+          <Tag>v{APP_VERSION}</Tag>
         </Panel>
         <Background color="#ccc" variant={BackgroundVariant.Dots} />
       </ReactFlow>
