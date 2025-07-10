@@ -84,3 +84,9 @@ button:focus-visible {
 .react-flow input {
   width: 30%;
 }
+
+.floating-footer {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}

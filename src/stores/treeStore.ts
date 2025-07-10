@@ -1,10 +1,10 @@
 import { applyNodeChanges, type Edge, type NodeChange } from "@xyflow/react";
-import TreeNode from "./components/TreeNode";
+import TreeNode from "../components/TreeNode";
 import { create, type StateCreator } from "zustand";
-import { getLaidOutTree } from "./utils/getLaidOutTree";
+import { getLaidOutTree } from "../utils/getLaidOutTree";
 import { temporal } from "zundo";
 import { devtools, persist } from "zustand/middleware";
-import { getNodeMap } from "./utils/helpers";
+import { getNodeMap } from "../utils/helpers";
 
 export interface TreeStore {
   nodes: TreeNode[];

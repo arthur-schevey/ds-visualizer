@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useTreeStore } from "../store";
+import { useTreeStore } from "../stores/treeStore";
 import { deserialize, serialize } from "../utils/helpers";
 import {
   Button,

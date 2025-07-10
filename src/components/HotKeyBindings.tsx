@@ -1,5 +1,5 @@
 import { useHotkeys } from "react-hotkeys-hook";
-import { useTreeStore } from "../store";
+import { useTreeStore } from "../stores/treeStore";
 
 export const HotkeyBindings = () => {
   const { undo, redo } = useTreeStore.temporal.getState();
