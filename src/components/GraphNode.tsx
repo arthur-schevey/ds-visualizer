@@ -4,7 +4,7 @@ import styles from "./TreeNode.module.css";
 import clsx from "clsx";
 
 type GraphNode = Node<
-  { value: string; leftId?: string; rightId?: string, dummy?: boolean },
+  { value: string; neighbors: string[] },
   "graphNode"
 >;
 
@@ -14,7 +14,7 @@ const GraphNode = ({ id, selected, data }: NodeProps<GraphNode>) => {
     <div
       className={clsx(styles.treenode, selected && styles.selected)}
     >
-        data.value
+        {data.value}
 
       {/* Invisible/uninteractable handles required for edge connections */}
       <Handle type="target" position={Position.Left} isConnectable={false} />

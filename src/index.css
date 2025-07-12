@@ -68,19 +68,29 @@ button:focus-visible {
   }
 }
 
-/* Custom Globals */
+/* App globals */
 
-/* Override handles to be centered and invisible */
+/*
+  Handles in React Flow are required to have a position, by default DS Chef will give handles an arbitrary `Position.Left`.
+  However, this will result in off center connection, so we must center the handle and make it invisible for the purposes of our app.
+*/
 .react-flow .react-flow__handle {
+  /* Centers handle with node */
   top: 50%;
   left: 50%;
+
+  /* By making the handle as small as possible, the left position of the connection is largely indiscernible and appears centered  */
+  height: 0;
+  width: 0;
+  min-height: 0;
+  min-width: 0;
+
+  /* Make invisible and uninteractable, otherwise a point (the border) will be visible */
   opacity: 0;
   pointer-events: "none";
-  /* right: auto; 
-  bottom: auto;
-  transform: translate(-50%, -50%); */
 }
 
+/* Node's "edit" input bar */
 .react-flow input {
   width: 30%;
 }

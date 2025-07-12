@@ -4,7 +4,7 @@ import { create, type StateCreator } from "zustand";
 import { getLaidOutTree } from "../utils/getLaidOutTree";
 import { temporal } from "zundo";
 import { devtools, persist } from "zustand/middleware";
-import { getNodeMap } from "../utils/helpers";
+import { getNodeMap } from "../utils/tree";
 
 export interface TreeStore {
   nodes: TreeNode[];

@@ -38,6 +38,8 @@ const TreeFlow = () => {
         deleteKeyCode={["Delete", "Backspace"]}
         nodeClickDistance={30} // makes the graph feel more responsive
         fitView // centers view on graph
+        maxZoom={5.0}
+        
         nodeTypes={nodeTypes}
         proOptions={{ hideAttribution: true }}
       >
