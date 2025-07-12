@@ -1,5 +1,5 @@
 import { useHotkeys } from "react-hotkeys-hook";
-import { useTreeStore } from "../stores/treeStore";
+import { useTreeStore, selectAllNodes } from "../stores/treeStore";
 
 export const HotkeyBindings = () => {
   const { undo, redo } = useTreeStore.temporal.getState();
@@ -14,6 +14,12 @@ export const HotkeyBindings = () => {
     console.log("redo");
     e.preventDefault();
     redo(1);
+  });
+
+  useHotkeys(["ctrl+a", "meta+a"], (e) => {
+    console.log("select all");
+    e.preventDefault();
+    selectAllNodes();
   });
 
   return null; // non-visual component

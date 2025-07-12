@@ -199,6 +199,18 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
   },
 });
 
+// Updates selected property of all nodes to true
+export function selectAllNodes() {
+  const { nodes } = useTreeStore.getState();
+
+  const updatedNodes = nodes.map((node) => ({
+    ...node,
+    selected: true,
+  }));
+
+  useTreeStore.setState({ nodes: updatedNodes });
+}
+
 export const useTreeStore = create<TreeStore>()(
   // Utilizes persist middleware to store tree data in local storage
   // Utilizes temporal middleware from zundo to allow undo/redo
