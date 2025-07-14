@@ -1,4 +1,4 @@
-import { applyNodeChanges, type Edge, type NodeChange } from "@xyflow/react";
+import { addEdge, applyNodeChanges, MarkerType, type Connection, type Edge, type NodeChange } from "@xyflow/react";
 import type TreeNode from "../apps/binaryTree/TreeNode";
 import { create, type StateCreator } from "zustand";
 import { temporal } from "zundo";
@@ -15,6 +15,7 @@ export interface GraphStore {
   updateNodeLabel: (id: string, label: string) => void;
   setGraph: (nodes: GraphNode[]) => void;
   addNode: (node: GraphNode) => void;
+  handleConnect: (connection: Connection) => void;
   resetGraph: () => void;
 }
 
@@ -41,6 +42,16 @@ const createGraphStore: StateCreator<GraphStore> = (set, get) => ({
     set({
       nodes: nodes.concat(node)
     })
+  },
+  handleConnect: (connection) => {
+    console.log("CONNECTED!");
+    const updated = addEdge({
+      ...connection,
+      id: crypto.randomUUID(),
+      type: 'graphEdge',
+      markerEnd: { type: MarkerType.Arrow },
+    }, get().edges);
+    set({ edges: updated });
   },
   resetGraph: () => {
 

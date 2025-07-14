@@ -126,8 +126,8 @@ const TreeNode = ({ id, selected, data }: NodeProps<TreeNode>) => {
       )}
 
       {/* Invisible/uninteractable handles required for edge connections */}
-      <Handle type="target" position={Position.Left} isConnectable={false} />
-      <Handle type="source" position={Position.Left} isConnectable={false} />
+      <Handle type="target" position={Position.Left} className={styles.treeHandle} isConnectable={false} />
+      <Handle type="source" position={Position.Left} className={styles.treeHandle} isConnectable={false} />
     </div>
   );
 };

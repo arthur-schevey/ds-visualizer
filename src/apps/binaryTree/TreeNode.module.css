@@ -27,3 +27,18 @@
 .right {
   left: 50px;
 }
+
+.treeHandle {
+  /* Centers handle with node */
+  left: 50% !important;
+
+  /* By making the handle as small as possible, the left position of the connection is largely indiscernible and appears centered  */
+  height: 0;
+  width: 0;
+  min-height: 0;
+  min-width: 0;
+
+  /* Make invisible and uninteractable, otherwise a point (the border) will be visible */
+  opacity: 0;
+  pointer-events: "none";
+}

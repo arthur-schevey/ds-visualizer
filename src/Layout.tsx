@@ -6,6 +6,7 @@ import { APP_VERSION } from "./shared/utils/version";
 import { PiGraph } from "react-icons/pi";
 import { TbBinaryTree } from "react-icons/tb";
 import { Link, Outlet } from "react-router";
+import { SVGDefs } from "./shared/components/SvgDefs";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -28,6 +29,7 @@ function Layout() {
     <div style={{ display: "flex", flexDirection: "column", height: "100vh", width: "100vw" }}>
       <Menu mode="horizontal" items={items} />
       <HotkeyBindings/>
+      <SVGDefs/>
       <Outlet/>
 
       {/* Version and GitHub link */}
