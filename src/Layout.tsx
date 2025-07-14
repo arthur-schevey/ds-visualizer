@@ -1,8 +1,8 @@
 import "@xyflow/react/dist/style.css";
-import { HotkeyBindings } from "./components/HotKeyBindings";
+import { HotkeyBindings } from "./shared/components/HotKeyBindings";
 import { Menu, Tag, Tooltip, type MenuProps } from "antd";
 import { AiOutlineGithub } from "react-icons/ai";
-import { APP_VERSION } from "./version";
+import { APP_VERSION } from "./shared/utils/version";
 import { PiGraph } from "react-icons/pi";
 import { TbBinaryTree } from "react-icons/tb";
 import { Link, Outlet } from "react-router";

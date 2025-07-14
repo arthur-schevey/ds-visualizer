@@ -1,5 +1,5 @@
-import type TreeNode from "../components/TreeNode";
-import type { TreeFormat } from "../types/serialization";
+import type TreeNode from "../TreeNode";
+import type { TreeFormat } from "../../../shared/types/serialization";
 
 export const getNodeMap = (nodes: TreeNode[]) =>
   Object.fromEntries(nodes.map((n) => [n.id, n]));

@@ -1,8 +1,8 @@
 import { ReactFlow, Panel, Background, BackgroundVariant, type NodeChange } from "@xyflow/react"
-import { TreeInput } from "../components/TreeInputHeader"
+import { TreeInput } from "./TreeInputHeader"
 import { useShallow } from "zustand/shallow"
-import TreeNode from "../components/TreeNode"
-import { useTreeStore, type TreeStore } from "../stores/treeStore"
+import TreeNode from "./TreeNode"
+import { useTreeStore, type TreeStore } from "../../stores/treeStore"
 
 const selector = (state: TreeStore) => ({
   nodes: state.nodes,

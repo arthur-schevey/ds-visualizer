@@ -2,7 +2,7 @@ import { Handle, Position, type Node, type NodeProps } from "@xyflow/react";
 import { useEffect, useRef, useState } from "react";
 import styles from "./TreeNode.module.css";
 import clsx from "clsx";
-import { useTreeStore } from "../stores/treeStore";
+import { useTreeStore } from "../../stores/treeStore";
 import { useShallow } from "zustand/shallow";
 
 type TreeNode = Node<
@@ -68,7 +68,7 @@ const TreeNode = ({ id, selected, data }: NodeProps<TreeNode>) => {
       onDoubleClick={() => setEditing(true)}
       onBlur={() => handleBlur(true)}
       onKeyDown={handleKeyDown}
-      className={clsx(styles.treenode, selected && styles.selected)}
+      className={clsx("ds-node", selected && "ds-selected")}
     >
       {editing ? (
         <input ref={inputRef} defaultValue={data.value}></input>
@@ -78,7 +78,7 @@ const TreeNode = ({ id, selected, data }: NodeProps<TreeNode>) => {
 
       {selected && (
         <>
-          {/* TODO: Refactor into add node button component */}
+          {/* Possible TODO: Refactor into add node button component */}
           {!data.leftId && (
             <button
               className={clsx(styles.addNode, styles.left)}

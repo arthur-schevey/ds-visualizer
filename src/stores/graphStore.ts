@@ -1,9 +1,9 @@
 import { applyNodeChanges, type Edge, type NodeChange } from "@xyflow/react";
-import type TreeNode from "../components/TreeNode";
+import type TreeNode from "../apps/binaryTree/TreeNode";
 import { create, type StateCreator } from "zustand";
 import { temporal } from "zundo";
 import { persist, devtools } from "zustand/middleware";
-import type GraphNode from "../components/GraphNode";
+import type GraphNode from "../apps/directedGraph/GraphNode";
 
 export interface GraphStore {
   nodes: GraphNode[];

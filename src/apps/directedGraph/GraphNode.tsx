@@ -1,6 +1,5 @@
-import { useGraphStore } from "../stores/graphStore";
+import { useGraphStore } from "../../stores/graphStore";
 import { Handle, Position, type Node, type NodeProps } from "@xyflow/react"
-import styles from "./TreeNode.module.css";
 import clsx from "clsx";
 
 type GraphNode = Node<
@@ -12,7 +11,7 @@ const GraphNode = ({ id, selected, data }: NodeProps<GraphNode>) => {
 
   return (
     <div
-      className={clsx(styles.treenode, selected && styles.selected)}
+      className={clsx("ds-node", selected && "ds-selected")}
     >
         {data.value}
 

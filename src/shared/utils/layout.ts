@@ -1,5 +1,5 @@
 import { hierarchy, tree } from "d3-hierarchy";
-import TreeNode from "../components/TreeNode";
+import TreeNode from "../../apps/binaryTree/TreeNode";
 
 const g = tree<TreeNode>();
 

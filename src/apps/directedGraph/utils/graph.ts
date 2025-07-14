@@ -1,5 +1,5 @@
 import type { XYPosition } from "@xyflow/react";
-import type GraphNode from "../components/GraphNode";
+import type GraphNode from "../GraphNode";
 
 export const createNode = (position: XYPosition): GraphNode => {
   return {

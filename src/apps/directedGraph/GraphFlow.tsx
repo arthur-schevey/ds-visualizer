@@ -5,9 +5,9 @@ import {
   useReactFlow,
   ReactFlowProvider,
 } from "@xyflow/react";
-import GraphNode from "../components/GraphNode";
-import { createNode } from "../utils/graph";
-import { useGraphStore, type GraphStore } from "../stores/graphStore";
+import GraphNode from "./GraphNode";
+import { createNode } from "./utils/graph";
+import { useGraphStore, type GraphStore } from "../../stores/graphStore";
 import { useShallow } from "zustand/shallow";
 
 const selector = (state: GraphStore) => ({

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useTreeStore } from "../stores/treeStore";
-import { deserialize, serialize } from "../utils/tree";
+import { useTreeStore } from "../../stores/treeStore";
+import { deserialize, serialize } from "./utils/tree";
 import {
   Button,
   Input,
@@ -9,7 +9,7 @@ import {
   Select,
 } from "antd";
 import { MdClear, MdOutlineContentCopy } from "react-icons/md";
-import type { TreeFormat } from "../types/serialization";
+import type { TreeFormat } from "../../shared/types/serialization";
 import { IoEnterOutline } from "react-icons/io5";
 import styles from "./TreeInputHeader.module.css"
 
