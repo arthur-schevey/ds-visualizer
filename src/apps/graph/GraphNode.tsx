@@ -72,6 +72,7 @@ const GraphNodeComponent = ({ id, selected, data }: NodeProps<GraphNode>) => {
       )}
 
       {/* Invisible/uninteractable handle required for edge connections */}
+      <Handle type="target" position={Position.Left} className={styles.graphHandle} />
       <Handle type="source" position={Position.Left} className={styles.graphHandle} />
     </div>
   );

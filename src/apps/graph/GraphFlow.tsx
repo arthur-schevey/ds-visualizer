@@ -63,14 +63,11 @@ const GraphFlowInner = () => {
       edgeTypes={edgeTypes}
       zoomOnDoubleClick={false}
       onDoubleClick={handleCanvasDoubleClick}
-      onNodeDoubleClick={() => {console.log("Node double clicked!")}} // these don't do anything yet
-      onEdgeDoubleClick={() => {console.log("Edge double clicked!")}} // these don't do anything yet
       onNodesChange={handleNodesChange}
       onNodesDelete={handleNodesDelete}
       onEdgesDelete={handleEdgesDelete}
       onConnect={handleConnect}
       connectionDragThreshold={10}
-      connectionMode={ConnectionMode.Loose}
       connectionLineComponent={GraphConnectionLine}
       proOptions={{ hideAttribution: true }}
       nodeOrigin={[0.5, 0.5]}
