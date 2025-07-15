@@ -1,4 +1,4 @@
-import type TreeNode from "../TreeNode";
+import type { TreeNode } from "@shared/types/flow";
 import type { TreeFormat } from "../../../shared/types/serialization";
 
 export const getNodeMap = (nodes: TreeNode[]) =>

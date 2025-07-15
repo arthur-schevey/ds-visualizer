@@ -6,7 +6,7 @@ import { APP_VERSION } from "./shared/utils/version";
 import { PiGraph } from "react-icons/pi";
 import { TbBinaryTree } from "react-icons/tb";
 import { Link, Outlet } from "react-router";
-import { SVGDefs } from "./shared/components/SvgDefs";
+import { SVGDefs } from "./shared/components/SVGDefs";
 
 type MenuItem = Required<MenuProps>['items'][number];
 

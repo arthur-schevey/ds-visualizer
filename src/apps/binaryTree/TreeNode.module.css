@@ -9,11 +9,11 @@
   justify-content: center;
   background-color: #3d3897;
   border-radius: 50%;
-  border: 0 solid black;
+  border: none;
 }
 
 .addNode:hover {
-  background-color: #413d99;
+  background-color: #48449f;
 }
 
 .addNode svg {

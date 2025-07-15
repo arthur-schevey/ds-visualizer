@@ -1,8 +1,9 @@
-import { ReactFlow, Panel, Background, BackgroundVariant, type NodeChange } from "@xyflow/react"
+import { ReactFlow, Panel, Background, BackgroundVariant, type NodeChange, ConnectionMode } from "@xyflow/react"
 import { TreeInput } from "./TreeInputHeader"
 import { useShallow } from "zustand/shallow"
-import TreeNode from "./TreeNode"
-import { useTreeStore, type TreeStore } from "../../stores/treeStore"
+import { useTreeStore, type TreeStore } from "@stores/treeStore"
+import type { TreeNode } from "@shared/types/flow"
+import TreeNodeComponent from "./TreeNode"
 
 const selector = (state: TreeStore) => ({
   nodes: state.nodes,
@@ -12,7 +13,7 @@ const selector = (state: TreeStore) => ({
 });
 
 const nodeTypes = {
-  treeNode: TreeNode,
+  treeNode: TreeNodeComponent,
 };
 
 const TreeFlow = () => {
@@ -40,7 +41,9 @@ const TreeFlow = () => {
         fitView // centers view on graph
         fitViewOptions={{maxZoom: 2.0, minZoom: 1.0}}
         maxZoom={3.0}
+        minZoom={1.0}
         nodeTypes={nodeTypes}
+        connectionMode={ConnectionMode.Loose}
         proOptions={{ hideAttribution: true }}
       >
 

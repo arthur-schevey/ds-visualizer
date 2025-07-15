@@ -1,5 +1,5 @@
 import { hierarchy, tree } from "d3-hierarchy";
-import TreeNode from "../../apps/binaryTree/TreeNode";
+import type { TreeNode } from "../types/flow";
 
 const g = tree<TreeNode>();
 

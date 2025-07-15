@@ -1,21 +1,19 @@
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { useEffect, useRef, useState } from "react";
-import styles from "./TreeNode.module.css";
+import styles from "./GraphNode.module.css"
 import clsx from "clsx";
-import { useTreeStore } from "@stores/treeStore";
+import { useGraphStore } from "@stores/graphStore";
 import { useShallow } from "zustand/shallow";
-import type { TreeNode } from "@shared/types/flow";
-import { PlusIcon } from "@shared/components/SVGDefs";
+import type { GraphNode } from "@shared/types/flow";
 
-const TreeNodeComponent = ({ id, selected, data }: NodeProps<TreeNode>) => {
+const GraphNodeComponent = ({ id, selected, data }: NodeProps<GraphNode>) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null); // reference to component so it can be immediately focused in handleDoubleClick
   const inputOriginalVal = useRef(data.value); // for use with `esc`
 
-  const { updateNodeLabel, nodeAddChild } = useTreeStore(
+  const { updateNodeLabel } = useGraphStore(
     useShallow((state) => ({
       updateNodeLabel: state.updateNodeLabel,
-      nodeAddChild: state.nodeAddChild,
     }))
   );
 
@@ -73,38 +71,10 @@ const TreeNodeComponent = ({ id, selected, data }: NodeProps<TreeNode>) => {
         data.value
       )}
 
-      {/* If node is selected, show plus icons for any children that can be created */}
-      {selected && (
-        <>
-          {!data.leftId && (
-            <button
-              className={clsx(styles.addNode, styles.left)}
-              onClick={() => nodeAddChild(id, "left")}
-            >
-              <PlusIcon/>
-            </button>
-          )}
-
-          {!data.rightId && (
-            <button
-              className={clsx(styles.addNode, styles.right)}
-              onClick={() => nodeAddChild(id, "right")}
-            >
-              <PlusIcon/>
-            </button>
-          )}
-        </>
-      )}
-
-      {/* Invisible/uninteractable handles required for edge connections */}
-      <Handle
-        type="source"
-        position={Position.Left}
-        className={styles.treeHandle}
-        isConnectable={false}
-      />
+      {/* Invisible/uninteractable handle required for edge connections */}
+      <Handle type="source" position={Position.Left} className={styles.graphHandle} />
     </div>
   );
 };
 
-export default TreeNodeComponent;
+export default GraphNodeComponent;

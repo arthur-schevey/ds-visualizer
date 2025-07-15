@@ -21,7 +21,17 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Aliasing */
+    "baseUrl": ".",
+    "paths": {
+      "@tree/*": ["src/apps/binaryTree/*"],
+      "@graph/*": ["src/apps/graph/*"],
+      "@stores/*": ["src/stores/*"],
+      "@shared/*": ["src/shared/*"]
+    }
   },
+
   "include": ["src"]
 }

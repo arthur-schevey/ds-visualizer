@@ -1,5 +1,8 @@
-import type { InternalNode, Node, XYPosition } from "@xyflow/react";
-import type GraphNode from "../GraphNode";
+import type { InternalNode, XYPosition } from "@xyflow/react";
+import type { GraphNode } from "../../../shared/types/flow";
+
+export const getNodeMap = (nodes: GraphNode[]) =>
+  Object.fromEntries(nodes.map((n) => [n.id, n]));
 
 export const createNode = (position: XYPosition): GraphNode => {
   return {
