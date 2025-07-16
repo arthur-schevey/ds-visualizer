@@ -1,8 +1,7 @@
-import { addEdge, applyNodeChanges, MarkerType, type Connection, type NodeChange } from "@xyflow/react";
 import { create, type StateCreator } from "zustand";
 import { temporal } from "zundo";
 import { persist, devtools } from "zustand/middleware";
-import type { GraphEdge, GraphNode } from "../shared/types/flow";
+import type { GraphEdge, GraphNode } from "../types";
 import { getNodeMap } from "@graph/utils/graph";
 
 export interface GraphStore {
@@ -10,13 +9,9 @@ export interface GraphStore {
   edges: GraphEdge[];
   nodeCounter: number;
 
-  handleNodesChange: (changes: NodeChange<GraphNode>[]) => void;
-  handleNodesDelete: (deleted: GraphNode[]) => void;
-  handleEdgesDelete: (deleted: GraphEdge[]) => void;
-  handleConnect: (connection: Connection) => void;
-
   updateNodeLabel: (id: string, label: string) => void;
-  setGraph: (nodes: GraphNode[]) => void;
+  setNodes: (nodes: GraphNode[] | ((prev: GraphNode[]) => GraphNode[])) => void;
+  setEdges: (edges: GraphEdge[] | ((prev: GraphEdge[]) => GraphEdge[])) => void;
   addNode: (node: GraphNode) => void;
   resetGraph: () => void;
 }
@@ -33,36 +28,7 @@ const createGraphStore: StateCreator<GraphStore> = (set, get) => ({
   nodes: [initGraphNode],
   edges: [],
   nodeCounter: 1,
-  handleNodesChange: (changes) => {
-    set({
-      nodes: applyNodeChanges<GraphNode>(changes, get().nodes),
-    });
-  },
-  handleNodesDelete: (deleted) => {
-    const deletedIds = new Set(deleted.map(n => n.id));
-    set((state) => ({
-      nodes: state.nodes.filter(node => !deletedIds.has(node.id)),
-      edges: state.edges.filter(
-        edge => !deletedIds.has(edge.source) && !deletedIds.has(edge.target)
-      ),
-    }));
-  },
-  handleEdgesDelete: (deleted) => {
-    const deletedIds = new Set(deleted.map(e => e.id));
-    set((state) => ({
-      edges: state.edges.filter(edge => !deletedIds.has(edge.id)),
-    }));
-  },
-  handleConnect: (connection) => {
-    const updated = addEdge({
-      ...connection,
-      id: crypto.randomUUID(),
-      type: 'graphEdge',
-      label: '1',
-      markerEnd: { type: MarkerType.Arrow },
-    }, get().edges);
-    set({ edges: updated });
-  },
+
   updateNodeLabel: (id, label) => {
     const { nodes } = get();
     const nodeMap = getNodeMap(nodes);
@@ -78,9 +44,14 @@ const createGraphStore: StateCreator<GraphStore> = (set, get) => ({
       nodes: updatedNodes,
     });
   },
-  setGraph: (nodes) => {
-
-  },
+  setNodes: (updater) =>
+    set((state) => ({
+      nodes: typeof updater === 'function' ? updater(state.nodes) : updater,
+    })),
+  setEdges: (updater) =>
+    set((state) => ({
+      edges: typeof updater === 'function' ? updater(state.edges) : updater,
+    })),
   addNode: (node) => {
     const { nodes, nodeCounter } = get()
     set({
@@ -89,7 +60,7 @@ const createGraphStore: StateCreator<GraphStore> = (set, get) => ({
     })
   },
   resetGraph: () => {
-
+    throw new Error('Unimplemented store method')
   }
 })
 

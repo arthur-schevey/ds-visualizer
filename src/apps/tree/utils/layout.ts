@@ -1,5 +1,5 @@
+import type { TreeNode } from "@tree/types";
 import { hierarchy, tree } from "d3-hierarchy";
-import type { TreeNode } from "../types/flow";
 
 const g = tree<TreeNode>();
 
@@ -9,8 +9,6 @@ export const getLaidOutTree = (
   rootId: string
 ): TreeNode[] => {
   if (nodes.length === 0) return nodes; // may be redundant
-
-  // WARNING: may need to set hidden property on dummies
 
   // Helper creates dummy node to assist with spacing
   const makeDummy = (): TreeNode => {

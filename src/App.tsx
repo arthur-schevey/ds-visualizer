@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import TreeFlow from "./apps/binaryTree/TreeFlow";
+import TreeFlow from "./apps/tree/TreeFlow";
 import GraphFlow from "./apps/graph/GraphFlow";
-import Layout from "./Layout";
+import Layout from "./shared/Layout";
 
 export default function App() {
   return (

@@ -2,9 +2,9 @@ import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { useEffect, useRef, useState } from "react";
 import styles from "./GraphNode.module.css"
 import clsx from "clsx";
-import { useGraphStore } from "@stores/graphStore";
+import { useGraphStore } from "@graph/stores/graphStore";
 import { useShallow } from "zustand/shallow";
-import type { GraphNode } from "@shared/types/flow";
+import type { GraphNode } from "./types";
 
 const GraphNodeComponent = ({ id, selected, data }: NodeProps<GraphNode>) => {
   const [editing, setEditing] = useState(false);

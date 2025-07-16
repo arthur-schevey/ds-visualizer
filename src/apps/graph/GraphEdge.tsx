@@ -6,9 +6,9 @@ import {
   type EdgeProps,
 } from "@xyflow/react";
 import { calculateEdgePathCoordinates } from "./utils/graph";
-import { useGraphStore } from "@stores/graphStore";
+import { useGraphStore } from "@graph/stores/graphStore";
 import styles from "./GraphEdge.module.css";
-import type { GraphEdge } from "@shared/types/flow";
+import type { GraphEdge } from "./types";
 
 function GraphEdgeComponent({ id, source, target }: EdgeProps<GraphEdge>) {
   const sourceNode = useInternalNode(source);
@@ -18,11 +18,11 @@ function GraphEdgeComponent({ id, source, target }: EdgeProps<GraphEdge>) {
     return null;
   }
 
-  
+  // Determine if a counter-directional edge exists
   const edges = useGraphStore.getState().edges;
   const hasCounterpart = edges.some(
-    (e) => e.source === sourceNode.id && e.target === targetNode.id
-  );
+    (e) => e.source === target && e.target === source
+  );  
 
   const [edgePath, labelX, labelY] = getStraightPath(
     calculateEdgePathCoordinates(sourceNode, targetNode, hasCounterpart)

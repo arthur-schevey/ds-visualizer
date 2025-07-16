@@ -4,24 +4,20 @@ import {
   BackgroundVariant,
   useReactFlow,
   ReactFlowProvider,
-  ConnectionMode,
 } from "@xyflow/react";
 import { createNode } from "./utils/graph";
-import { useGraphStore, type GraphStore } from "@stores/graphStore";
+import { useGraphStore, type GraphStore } from "@graph/stores/graphStore";
 import { useShallow } from "zustand/shallow";
 import GraphEdgeComponent from "./GraphEdge";
 import GraphNodeComponent from "./GraphNode";
 import GraphConnectionLine from "./GraphConnectionLine";
+import { useGraphFlowHandlers } from "./utils/useGraphFlowHandlers";
 
 const selector = (state: GraphStore) => ({
   nodes: state.nodes,
   edges: state.edges,
   nodeCounter: state.nodeCounter,
   addNode: state.addNode,
-  handleConnect: state.handleConnect,
-  handleNodesChange: state.handleNodesChange,
-  handleNodesDelete: state.handleNodesDelete,
-  handleEdgesDelete: state.handleEdgesDelete,
 });
 
 const nodeTypes = {
@@ -33,21 +29,27 @@ const edgeTypes = {
 };
 
 const GraphFlowInner = () => {
-  const { nodes, edges, nodeCounter, addNode, handleConnect, handleNodesChange, handleNodesDelete, handleEdgesDelete } = useGraphStore(
+  const {
+    handleNodesChange,
+    handleNodesDelete,
+    handleEdgesDelete,
+    handleConnect,
+  } = useGraphFlowHandlers();
+  const { nodes, edges, nodeCounter, addNode } = useGraphStore(
     useShallow(selector)
   );
   const { screenToFlowPosition } = useReactFlow();
 
-  const handleCanvasDoubleClick = (event: React.MouseEvent<HTMLDivElement>): void => {
+  const handleCanvasDoubleClick = (
+    event: React.MouseEvent<HTMLDivElement>
+  ): void => {
     // Ignore double click if mouse over node or edge
-    const isNode = (event.target as HTMLElement).closest('.react-flow__node');
-    const isEdge = (event.target as HTMLElement).closest('.react-flow__edge');
+    const isNode = (event.target as HTMLElement).closest(".react-flow__node");
+    const isEdge = (event.target as HTMLElement).closest(".react-flow__edge");
     if (isNode || isEdge) return;
 
-    const node = createNode(
-      nodeCounter.toString(),
-      screenToFlowPosition({ x: event.clientX, y: event.clientY })
-    );
+    const pos = screenToFlowPosition({ x: event.clientX, y: event.clientY });
+    const node = createNode(nodeCounter.toString(), pos);
     addNode(node);
   };
 
@@ -58,7 +60,7 @@ const GraphFlowInner = () => {
       deleteKeyCode={["Delete", "Backspace"]}
       nodeClickDistance={30} // makes the graph feel more responsive
       fitView // centers view on graph
-      fitViewOptions={{maxZoom: 2.0, minZoom: 1.0}}
+      fitViewOptions={{ maxZoom: 2.0, minZoom: 1.0 }}
       maxZoom={3.0}
       minZoom={1.0}
       nodeTypes={nodeTypes}

@@ -1,9 +1,9 @@
 import { applyNodeChanges, type Edge, type NodeChange } from "@xyflow/react";
 import { create, type StateCreator } from "zustand";
-import { getLaidOutTree } from "../shared/utils/layout";
+import { getLaidOutTree } from "@tree/utils/layout";
 import { temporal } from "zundo";
 import { devtools, persist } from "zustand/middleware";
-import type { TreeNode } from "../shared/types/flow";
+import type { TreeNode } from "../types";
 import { getNodeMap } from "@tree/utils/tree";
 
 export interface TreeStore {
@@ -12,8 +12,8 @@ export interface TreeStore {
   rootId: string;
   nodeCounter: number;
 
-  handleNodesChange: (changes: NodeChange<TreeNode>[]) => void;
-  handleNodesDelete: (deleted: TreeNode[]) => void;
+  setNodes: (nodes: TreeNode[] | ((prev: TreeNode[]) => TreeNode[])) => void;
+  setEdges: (edges: Edge[] | ((prev: Edge[]) => Edge[])) => void;
   updateNodeLabel: (id: string, label: string) => void;
   nodeAddChild: (parentId: string, side: "left" | "right") => void;
   setTree: (nodes: TreeNode[], rootId: string) => void;
@@ -35,66 +35,14 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
   rootId: initRootNode.id,
   nodeCounter: 1,
 
-  handleNodesChange: (changes) => {
-    set({
-      nodes: applyNodeChanges<TreeNode>(changes, get().nodes),
-    });
-  },
-  handleNodesDelete: (deleted) => {
-    const { nodes, edges } = get();
-    const nodeMap = getNodeMap(nodes);
-
-    // To prune, we need to obtain a list of descendants
-    const collectDescendants = (
-      id: string | undefined,
-      acc = new Set<string>()
-    ) => {
-      if (!id) return acc; // node does not exist
-      const node = nodeMap[id];
-      acc.add(id);
-      collectDescendants(node.data.leftId, acc);
-      collectDescendants(node.data.rightId, acc);
-      return acc;
-    };
-
-    // Reduce all deleted nodes and their descendants into one collection
-    const toDelete: Set<string> = deleted.reduce((acc, node) => {
-      return collectDescendants(node.id, acc);
-    }, new Set<string>());
-
-    // Remove deleted from nodes/edges
-    const updatedNodes = nodes.filter((n) => !toDelete.has(n.id));
-    const updatedEdges = edges.filter(
-      (e) => !toDelete.has(e.source) && !toDelete.has(e.target)
-    ); // TODO: check the logic here later and ensure this deletes EVERY relevant edge to prevent difficult bugs
-
-    // Find parents of deleted nodes and remove reference to deleted child
-    const updatedParents = updatedNodes
-      .filter((node) => {
-        const leftId = node.data.leftId;
-        const rightId = node.data.rightId;
-        return toDelete.has(leftId!) || toDelete.has(rightId!);
-      })
-      .map((node) => {
-        const newParent = { ...node };
-        if (toDelete.has(node.data.leftId!)) delete newParent.data.leftId;
-        if (toDelete.has(node.data.rightId!)) delete newParent.data.rightId;
-        nodeMap[newParent.id] = newParent;
-        return newParent;
-      });
-
-    // Lastly modify updatedParents
-    const parentMap = new Map(updatedParents.map((node) => [node.id, node]));
-
-    const finalNodes = updatedNodes.map((node) =>
-      parentMap.has(node.id) ? parentMap.get(node.id)! : node
-    );
-
-    set({
-      nodes: finalNodes,
-      edges: updatedEdges,
-    });
-  },
+  setNodes: (updater) =>
+    set((state) => ({
+      nodes: typeof updater === 'function' ? updater(state.nodes) : updater,
+    })),
+  setEdges: (updater) =>
+    set((state) => ({
+      edges: typeof updater === 'function' ? updater(state.edges) : updater,
+    })),
   updateNodeLabel: (id, label) => {
     const { nodes } = get();
     const nodeMap = getNodeMap(nodes);
@@ -145,10 +93,6 @@ const createTreeStore: StateCreator<TreeStore> = (set, get) => ({
       .concat(newChild);
 
     const updatedNodeMap = getNodeMap(updatedNodes);
-
-    // TODO: getLaidOutTree needs to be refactored to accept only nodeMap (and nodes if needed)
-    // its completely useless to pass edges. Additionally, getLaidOutTree needs to be cleaned up
-    // + types improved.
     const laidOutNodes = getLaidOutTree(updatedNodes, updatedNodeMap, rootId);
 
     set({

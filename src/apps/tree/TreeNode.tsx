@@ -2,10 +2,10 @@ import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { useEffect, useRef, useState } from "react";
 import styles from "./TreeNode.module.css";
 import clsx from "clsx";
-import { useTreeStore } from "@stores/treeStore";
+import { useTreeStore } from "@tree/stores/treeStore";
 import { useShallow } from "zustand/shallow";
-import type { TreeNode } from "@shared/types/flow";
-import { PlusIcon } from "@shared/components/SVGDefs";
+import type { TreeNode } from "./types";
+import { PlusIcon } from "@shared/SVGDefs";
 
 const TreeNodeComponent = ({ id, selected, data }: NodeProps<TreeNode>) => {
   const [editing, setEditing] = useState(false);

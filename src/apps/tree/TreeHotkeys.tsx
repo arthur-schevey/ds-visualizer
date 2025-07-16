@@ -1,7 +1,7 @@
 import { useHotkeys } from "react-hotkeys-hook";
-import { useTreeStore, selectAllNodes } from "@stores/treeStore";
+import { useTreeStore, selectAllNodes } from "@tree/stores/treeStore";
 
-export const HotkeyBindings = () => {
+export const TreeHotkeys = () => {
   const { undo, redo } = useTreeStore.temporal.getState();
 
   useHotkeys("ctrl+z, meta+z", (e) => {

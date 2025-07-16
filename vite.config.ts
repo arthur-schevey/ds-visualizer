@@ -7,9 +7,8 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   resolve: {
     alias: {
-      "@tree": "src/apps/binaryTree",
+      "@tree": "src/apps/tree",
       "@graph": "src/apps/graph",
-      "@stores": "src/stores",
       "@shared": "src/shared",
     },
   },
