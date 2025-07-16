@@ -2,22 +2,14 @@ import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { useEffect, useRef, useState } from "react";
 import styles from "./TreeNode.module.css";
 import clsx from "clsx";
-import { useTreeStore } from "@tree/stores/treeStore";
-import { useShallow } from "zustand/shallow";
 import type { TreeNode } from "./types";
 import { PlusIcon } from "@shared/SVGDefs";
+import { treeAPI } from "./stores/treeAPI";
 
 const TreeNodeComponent = ({ id, selected, data }: NodeProps<TreeNode>) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null); // reference to component so it can be immediately focused in handleDoubleClick
   const inputOriginalVal = useRef(data.value); // for use with `esc`
-
-  const { updateNodeLabel, nodeAddChild } = useTreeStore(
-    useShallow((state) => ({
-      updateNodeLabel: state.updateNodeLabel,
-      nodeAddChild: state.nodeAddChild,
-    }))
-  );
 
   // Handles changing editing state
   useEffect(() => {
@@ -37,7 +29,7 @@ const TreeNodeComponent = ({ id, selected, data }: NodeProps<TreeNode>) => {
    */
   const handleBlur = (doSave: boolean) => {
     if (doSave && inputRef.current) {
-      updateNodeLabel(id, inputRef.current.value);
+      treeAPI.updateNodeLabel(id, inputRef.current.value);
       inputOriginalVal.current = inputRef.current.value; // Update prev value for use with `Esc`
     }
 
@@ -79,7 +71,7 @@ const TreeNodeComponent = ({ id, selected, data }: NodeProps<TreeNode>) => {
           {!data.leftId && (
             <button
               className={clsx(styles.addNode, styles.left)}
-              onClick={() => nodeAddChild(id, "left")}
+              onClick={() => treeAPI.nodeAddChild(id, "left")}
             >
               <PlusIcon/>
             </button>
@@ -88,7 +80,7 @@ const TreeNodeComponent = ({ id, selected, data }: NodeProps<TreeNode>) => {
           {!data.rightId && (
             <button
               className={clsx(styles.addNode, styles.right)}
-              onClick={() => nodeAddChild(id, "right")}
+              onClick={() => treeAPI.nodeAddChild(id, "right")}
             >
               <PlusIcon/>
             </button>

@@ -12,13 +12,13 @@ import { MdClear, MdOutlineContentCopy } from "react-icons/md";
 import type { TreeFormat } from "./types";
 import { IoEnterOutline } from "react-icons/io5";
 import styles from "./TreeInputHeader.module.css"
+import { treeAPI } from "./stores/treeAPI";
 
 export const TreeInput = () => {
   const { nodes, rootId } = useTreeStore();
   const [inputValue, setInputValue] = useState("");
   const [inputIsValid, setInputIsValid] = useState(true);
   const [format, setFormat] = useState<TreeFormat>("leetcode-strict");
-  const { setTree, resetTree } = useTreeStore();
 
   // Update input whenever the tree or format changes
   useEffect(() => {
@@ -42,7 +42,7 @@ export const TreeInput = () => {
   const applyDeserialization = () => {
     try {
       const result = deserialize(format, inputValue);
-      setTree(result.nodes, result.rootId);
+      treeAPI.setTree(result.nodes, result.rootId);
       setInputIsValid(true);
     } catch (error) {
       console.error(error);
@@ -128,7 +128,7 @@ export const TreeInput = () => {
         icon={<MdOutlineContentCopy fontSize={"24px"} />}
       />
 
-      <Popconfirm title="Reset tree?" onConfirm={resetTree} okText="Yes">
+      <Popconfirm title="Reset tree?" onConfirm={treeAPI.resetTree} okText="Yes">
         <Button
           danger
           type="default"

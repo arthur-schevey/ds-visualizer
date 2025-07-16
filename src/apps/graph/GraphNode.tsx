@@ -2,20 +2,13 @@ import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { useEffect, useRef, useState } from "react";
 import styles from "./GraphNode.module.css"
 import clsx from "clsx";
-import { useGraphStore } from "@graph/stores/graphStore";
-import { useShallow } from "zustand/shallow";
 import type { GraphNode } from "./types";
+import { graphAPI } from "./stores/graphAPI";
 
 const GraphNodeComponent = ({ id, selected, data }: NodeProps<GraphNode>) => {
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null); // reference to component so it can be immediately focused in handleDoubleClick
   const inputOriginalVal = useRef(data.value); // for use with `esc`
-
-  const { updateNodeLabel } = useGraphStore(
-    useShallow((state) => ({
-      updateNodeLabel: state.updateNodeLabel,
-    }))
-  );
 
   // Handles changing editing state
   useEffect(() => {
@@ -35,7 +28,7 @@ const GraphNodeComponent = ({ id, selected, data }: NodeProps<GraphNode>) => {
    */
   const handleBlur = (doSave: boolean) => {
     if (doSave && inputRef.current) {
-      updateNodeLabel(id, inputRef.current.value);
+      graphAPI.updateNodeLabel(id, inputRef.current.value);
       inputOriginalVal.current = inputRef.current.value; // Update prev value for use with `Esc`
     }
 

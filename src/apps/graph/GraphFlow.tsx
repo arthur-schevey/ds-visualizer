@@ -12,12 +12,12 @@ import GraphEdgeComponent from "./GraphEdge";
 import GraphNodeComponent from "./GraphNode";
 import GraphConnectionLine from "./GraphConnectionLine";
 import { useGraphFlowHandlers } from "./utils/useGraphFlowHandlers";
+import { graphAPI } from "./stores/graphAPI";
 
 const selector = (state: GraphStore) => ({
   nodes: state.nodes,
   edges: state.edges,
   nodeCounter: state.nodeCounter,
-  addNode: state.addNode,
 });
 
 const nodeTypes = {
@@ -35,7 +35,7 @@ const GraphFlowInner = () => {
     handleEdgesDelete,
     handleConnect,
   } = useGraphFlowHandlers();
-  const { nodes, edges, nodeCounter, addNode } = useGraphStore(
+  const { nodes, edges, nodeCounter } = useGraphStore(
     useShallow(selector)
   );
   const { screenToFlowPosition } = useReactFlow();
@@ -50,7 +50,7 @@ const GraphFlowInner = () => {
 
     const pos = screenToFlowPosition({ x: event.clientX, y: event.clientY });
     const node = createNode(nodeCounter.toString(), pos);
-    addNode(node);
+    graphAPI.addNode(node);
   };
 
   return (
