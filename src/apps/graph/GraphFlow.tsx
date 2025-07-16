@@ -16,6 +16,7 @@ import GraphConnectionLine from "./GraphConnectionLine";
 const selector = (state: GraphStore) => ({
   nodes: state.nodes,
   edges: state.edges,
+  nodeCounter: state.nodeCounter,
   addNode: state.addNode,
   handleConnect: state.handleConnect,
   handleNodesChange: state.handleNodesChange,
@@ -32,7 +33,7 @@ const edgeTypes = {
 };
 
 const GraphFlowInner = () => {
-  const { nodes, edges, addNode, handleConnect, handleNodesChange, handleNodesDelete, handleEdgesDelete } = useGraphStore(
+  const { nodes, edges, nodeCounter, addNode, handleConnect, handleNodesChange, handleNodesDelete, handleEdgesDelete } = useGraphStore(
     useShallow(selector)
   );
   const { screenToFlowPosition } = useReactFlow();
@@ -44,6 +45,7 @@ const GraphFlowInner = () => {
     if (isNode || isEdge) return;
 
     const node = createNode(
+      nodeCounter.toString(),
       screenToFlowPosition({ x: event.clientX, y: event.clientY })
     );
     addNode(node);

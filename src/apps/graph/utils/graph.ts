@@ -1,25 +1,23 @@
 import type { InternalNode, XYPosition } from "@xyflow/react";
-import type { GraphNode } from "../../../shared/types/flow";
+import type { GraphNode, GraphEdge } from "../../../shared/types/flow";
 
 export const getNodeMap = (nodes: GraphNode[]) =>
   Object.fromEntries(nodes.map((n) => [n.id, n]));
 
-export const createNode = (position: XYPosition): GraphNode => {
+export const createNode = (value: string = "None", position: XYPosition = { x: 0, y: 0 }): GraphNode => {
   return {
     id: crypto.randomUUID(),
-    className: "nopan", // disallows panning viewport when hovering node
+    className: "nopan", // disallows interacting viewport when hovering node
     type: "graphNode",
     position: position,
     data: {
-      value: "0", // TODO: initialize to a global counter or something, may want to update createNode params to include optional value
+      value: value,
       neighbors: []
     },
   };
 } 
 
-// this helper function returns the intersection point
-// of the line between the center of the intersectionNode and the target node
-// Given a circle
+// From the center of a circle and some target, find the point of intersection on the circle
 function getNodeIntersection(sourceNode: InternalNode, targetNode: InternalNode) {
 
   if (!sourceNode.measured || sourceNode.measured.width === undefined) {
@@ -29,12 +27,11 @@ function getNodeIntersection(sourceNode: InternalNode, targetNode: InternalNode)
   // Diameter/radius of node
   const width = sourceNode.measured.width;
   const r = width / 2;
-  // console.log("SOURCE NODE", sourceNode)
 
   // The origin of the node is top left, so we will adjust it by `r` to obtain the center point
   const sourceNodeOrigin = sourceNode.internals.positionAbsolute;
   const targetNodeOrigin = targetNode.internals.positionAbsolute;
-  // console.log("Source origin", sourceNodeOrigin, "Target origin", targetNodeOrigin);
+
   const sourceNodeCenter = {
     x: sourceNodeOrigin.x + r,
     y: sourceNodeOrigin.y + r,
@@ -43,7 +40,6 @@ function getNodeIntersection(sourceNode: InternalNode, targetNode: InternalNode)
     x: targetNodeOrigin.x + r,
     y: targetNodeOrigin.y + r,
   };
-  // console.log("Source center", sourceNodeCenter, "Target center", targetNodeCenter);
 
   // Calculate vector from source center to target center
   const dx = targetNodeCenter.x - sourceNodeCenter.x;
@@ -61,7 +57,7 @@ function getNodeIntersection(sourceNode: InternalNode, targetNode: InternalNode)
   return { x: intersectionX, y: intersectionY };
 }
 
-// returns the parameters (sx, sy, tx, ty) which are the closest two points between two circles
+// Returns (sx, sy, tx, ty) which are the two closest points between two circles
 export function getEdgeParams(source: InternalNode, target: InternalNode) {
   const sourceIntersectionPoint = getNodeIntersection(source, target);
   const targetIntersectionPoint = getNodeIntersection(target, source);
@@ -72,4 +68,55 @@ export function getEdgeParams(source: InternalNode, target: InternalNode) {
     tx: targetIntersectionPoint.x,
     ty: targetIntersectionPoint.y,
   };
+}
+
+// Offsets a line parallel to itself by the given distance
+export function offsetLinePerpendicular(
+  sourceX: number,
+  sourceY: number,
+  targetX: number,
+  targetY: number,
+  offsetDistance: number
+) {
+  // Vector from source to target
+  const deltaX = targetX - sourceX;
+  const deltaY = targetY - sourceY;
+
+  // Get perpendicular vector (rotate 90 degrees)
+  const perpX = deltaY;
+  const perpY = -deltaX;
+  
+  // Normalize to unit vector
+  const magnitude = Math.sqrt(perpX * perpX + perpY * perpY);
+  const unitX = perpX / magnitude;
+  const unitY = perpY / magnitude;
+
+  // Apply offset to both points
+  const offsetSourceX = sourceX + unitX * offsetDistance;
+  const offsetSourceY = sourceY + unitY * offsetDistance;
+  const offsetTargetX = targetX + unitX * offsetDistance;
+  const offsetTargetY = targetY + unitY * offsetDistance;
+
+  return {
+    sourceX: offsetSourceX,
+    sourceY: offsetSourceY,
+    targetX: offsetTargetX,
+    targetY: offsetTargetY,
+  };
+}
+
+// Calculate edge path coordinates, handling bidirectional edge offsetting
+export function calculateEdgePathCoordinates(
+  sourceNode: InternalNode,
+  targetNode: InternalNode,
+  hasCounterpart: boolean,
+) {
+  const { sx, sy, tx, ty } = getEdgeParams(sourceNode, targetNode);
+
+  // If there's a bidirectional edge, offset this edge to avoid overlap
+  const { sourceX, sourceY, targetX, targetY } = hasCounterpart
+    ? offsetLinePerpendicular(sx, sy, tx, ty, 6)
+    : { sourceX: sx, sourceY: sy, targetX: tx, targetY: ty };
+
+  return { sourceX, sourceY, targetX, targetY };
 }

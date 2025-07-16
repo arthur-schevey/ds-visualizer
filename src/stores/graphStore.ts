@@ -13,10 +13,11 @@ export interface GraphStore {
   handleNodesChange: (changes: NodeChange<GraphNode>[]) => void;
   handleNodesDelete: (deleted: GraphNode[]) => void;
   handleEdgesDelete: (deleted: GraphEdge[]) => void;
+  handleConnect: (connection: Connection) => void;
+
   updateNodeLabel: (id: string, label: string) => void;
   setGraph: (nodes: GraphNode[]) => void;
   addNode: (node: GraphNode) => void;
-  handleConnect: (connection: Connection) => void;
   resetGraph: () => void;
 }
 
@@ -52,6 +53,16 @@ const createGraphStore: StateCreator<GraphStore> = (set, get) => ({
       edges: state.edges.filter(edge => !deletedIds.has(edge.id)),
     }));
   },
+  handleConnect: (connection) => {
+    const updated = addEdge({
+      ...connection,
+      id: crypto.randomUUID(),
+      type: 'graphEdge',
+      label: '1',
+      markerEnd: { type: MarkerType.Arrow },
+    }, get().edges);
+    set({ edges: updated });
+  },
   updateNodeLabel: (id, label) => {
     const { nodes } = get();
     const nodeMap = getNodeMap(nodes);
@@ -71,20 +82,11 @@ const createGraphStore: StateCreator<GraphStore> = (set, get) => ({
 
   },
   addNode: (node) => {
-    const { nodes } = get()
+    const { nodes, nodeCounter } = get()
     set({
-      nodes: nodes.concat(node)
+      nodes: nodes.concat(node),
+      nodeCounter: nodeCounter + 1, 
     })
-  },
-  handleConnect: (connection) => {
-    const updated = addEdge({
-      ...connection,
-      id: crypto.randomUUID(),
-      type: 'graphEdge',
-      label: '1',
-      markerEnd: { type: MarkerType.Arrow },
-    }, get().edges);
-    set({ edges: updated });
   },
   resetGraph: () => {
 
