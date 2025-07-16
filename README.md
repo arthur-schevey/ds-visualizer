@@ -78,7 +78,19 @@ Start the server
 
 ## Docs
 ### Project Structure
-The project structure has not matured enough to document yet.
+*This is still in early development and the structure is subject to change.*
+
+That being said, as with most React applications, the entry point of the program is `main.tsx` which renders `App.tsx`—our router. 
+
+The router has a top-level `Layout.tsx` file which describes shared visuals like the navigation bar and floating footer. It contains an outlet for our router to inject either the `TreeFlow` or `GraphFlow` component which are the hearts of their respective app.
+
+From there, each app (or feature) has its own folder to serve as its domain consisting of some variation of the following ideas:
+- **store**: Contains the app data, initialization of that data, important constants, and middleware (e.g. `devtools`, `persist` or `zundo`).
+- **api**: Contains actions that act on their respective store that are globally accessible
+- **utils**
+- **types**
+- **components**
+
 ### Layouting
 #### Binary Tree Layout
 By default, `d3-hierarchy` lays out a lone child directly below the parent as seen in the left tree. In order to circumvent this behavior to look more like a binary tree, we must give each node *without* a sibling a "dummy" sibling during the layouting procedure. Leaf nodes must not have any dummy children to prevent "spreading" out the tree.
@@ -88,7 +100,13 @@ By default, `d3-hierarchy` lays out a lone child directly below the parent as se
 Additionally, d3-hierarchy will order children as they are recieved, so it is important to distinguish a lone left child from a lone right child by placing the dummy node accordingly.
 
 #### Graph Layout
-Not yet implemented. The layout will be decided by the user. There may be an option to use d3-force once implemented.
+Not yet implemented. The layout will be decided by the user. There may be an option to use d3-force or other d3 layouts once implemented.
+
+Regarding edge creation, we needed something slightly more sophisticated than trees to draw connections, show an arrow, and most importantly visually distinguish bidirectional edges.
+
+1. Drawing connections/edges (left side of image): An edge between circles is best described by a line from the two closest points of two circles. To get these closest points, we need to calculate the unit vector from some source position to a target and march the source position `r` units. Lastly, this needs to be repeated from the opposite direction.
+2. Offsetting bidirectional edges (right side of image): To avoid edges stacking on top of each other, we need to move the points perpendicular `distance` units. To do this, we first rotate the vector of each line 90°, calculate the unit vector, then march each point `distance` units. 
+![Left: Demonstrates vector from source to target and finding the intersection point on a circle. Right: Demonstrates rotating an edge to obtain the perpendicular vector.](image.png)
 
 ### State Management
 Uses Zustand for state management. Each app within the project should have its own store independent of other apps. 
