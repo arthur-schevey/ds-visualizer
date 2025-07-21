@@ -44,7 +44,7 @@ body {
 /* App globals */
 
 /* Node's "edit" input bar */
-.react-flow input {
+.react-flow .ds-node input {
   width: 30%;
 }
 

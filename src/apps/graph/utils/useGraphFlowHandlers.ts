@@ -54,8 +54,10 @@ export function useGraphFlowHandlers() {
             ...connection,
             id: crypto.randomUUID(),
             type: "graphEdge",
-            label: "1",
             markerEnd: { type: MarkerType.Arrow },
+            data: {
+              weight: 1
+            }
           },
           prevEdges
         )

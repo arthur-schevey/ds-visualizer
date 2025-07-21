@@ -19,11 +19,27 @@ export const graphAPI = {
     });
   },
 
+  updateEdgeWeight: (id: string, weight: number) => {
+    // const parsedWeight = Number(weight);
+    // if (!isNaN(parsedWeight)) return;
+
+    const { edges } = useGraphStore.getState();
+    const updatedEdges = edges.map((edge) =>
+      edge.id === id
+        ? { ...edge, data: { ...edge.data, weight: weight } }
+        : edge
+    );
+
+    useGraphStore.setState({
+      edges: updatedEdges,
+    });
+  },
+
   addNode: (node: GraphNode) => {
     const { nodes, nodeCounter } = useGraphStore.getState();
     useGraphStore.setState({
       nodes: nodes.concat(node),
-      nodeCounter: nodeCounter + 1, 
+      nodeCounter: nodeCounter + 1,
     });
   },
 

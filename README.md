@@ -106,7 +106,8 @@ Regarding edge creation, we needed something slightly more sophisticated than tr
 
 1. Drawing connections/edges (left side of image): An edge between circles is best described by a line from the two closest points of two circles. To get these closest points, we need to calculate the unit vector from some source position to a target and march the source position `r` units. Lastly, this needs to be repeated from the opposite direction.
 2. Offsetting bidirectional edges (right side of image): To avoid edges stacking on top of each other, we need to move the points perpendicular `distance` units. To do this, we first rotate the vector of each line 90°, calculate the unit vector, then march each point `distance` units. 
-![Left: Demonstrates vector from source to target and finding the intersection point on a circle. Right: Demonstrates rotating an edge to obtain the perpendicular vector.](image.png)
+
+![Left: Demonstrates vector from source to target and finding the intersection point on a circle. Right: Demonstrates rotating an edge to obtain the perpendicular vector.](public/edge-vector-demo.png)
 
 ### State Management
 Uses Zustand for state management. Each app within the project should have its own store independent of other apps. 
