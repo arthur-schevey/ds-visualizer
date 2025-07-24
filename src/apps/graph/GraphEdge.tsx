@@ -21,6 +21,9 @@ function GraphEdgeComponent({
   const sourceNode = useInternalNode(source);
   const targetNode = useInternalNode(target);
 
+  // Determine if weights are set to be visible
+  const weighted = useGraphStore((state) => state.weighted)
+
   // Weight editing logic
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -62,7 +65,7 @@ function GraphEdgeComponent({
     }
   };
 
-    if (!sourceNode || !targetNode) {
+  if (!sourceNode || !targetNode) {
     return null;
   }
 
@@ -75,6 +78,7 @@ function GraphEdgeComponent({
   const [edgePath, labelX, labelY] = getStraightPath(
     getEdgePathCoordinates(sourceNode, targetNode, hasCounterpart)
   );
+  
 
   return (
     <>
@@ -87,28 +91,29 @@ function GraphEdgeComponent({
         onDoubleClick={() => setEditing(true)}
         style={{ cursor: "pointer" }}
       />
-      <EdgeLabelRenderer>
-        <div
-          className={styles.weightRenderer}
-          style={{
-            transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
-          }}
-        >
+
+      {weighted && (
+        <EdgeLabelRenderer>
+          <div
+            className={styles.weightRenderer}
+            style={{
+              transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
+            }}
+          >
             {editing ? (
-            <input
-              ref={inputRef}
-              defaultValue={originalVal.current}
-              onBlur={() => handleBlur(true)}
-              onKeyDown={handleKeyDown}
-              className={styles.weightInput}
-            />
+              <input
+                ref={inputRef}
+                defaultValue={originalVal.current}
+                onBlur={() => handleBlur(true)}
+                onKeyDown={handleKeyDown}
+                className={styles.weightInput}
+              />
             ) : (
-            <div className={styles.weightLabel}>
-              {data?.weight}
-            </div>
+              <div className={styles.weightLabel}>{data?.weight}</div>
             )}
-        </div>
-      </EdgeLabelRenderer>
+          </div>
+        </EdgeLabelRenderer>
+      )}
     </>
   );
 }

@@ -20,9 +20,6 @@ export const graphAPI = {
   },
 
   updateEdgeWeight: (id: string, weight: number) => {
-    // const parsedWeight = Number(weight);
-    // if (!isNaN(parsedWeight)) return;
-
     const { edges } = useGraphStore.getState();
     const updatedEdges = edges.map((edge) =>
       edge.id === id
@@ -55,5 +52,17 @@ export const graphAPI = {
     useGraphStore.setState({
       uiMode: mode,
     });
-  }
+  },
+
+  setWeighted: (weighted: boolean) => {
+    useGraphStore.setState({
+      weighted,
+    });
+  },
+
+  setDirected: (directed: boolean) => {
+    useGraphStore.setState({
+      directed,
+    });
+  },
 };

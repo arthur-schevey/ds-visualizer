@@ -10,8 +10,6 @@ export const createNode = (value: string = "", position: XYPosition = { x: 0, y:
     className: "nopan", // disallows interacting viewport when hovering node
     type: "graphNode",
     position: position,
-    draggable: true,
-    connectable: false,
     data: {
       value: value,
       neighbors: []
