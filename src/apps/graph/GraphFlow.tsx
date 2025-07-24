@@ -15,6 +15,7 @@ import GraphConnectionLine from "./GraphConnectionLine";
 import { useGraphFlowHandlers } from "./utils/useGraphFlowHandlers";
 import { graphAPI } from "./stores/graphAPI";
 import { GraphHeader } from "./GraphHeader";
+import { GraphHotkeys } from "./GraphHotkeys";
 
 const selector = (state: GraphStore) => ({
   nodes: state.nodes,
@@ -79,6 +80,8 @@ const GraphFlowInner = () => {
       proOptions={{ hideAttribution: true }}
       nodeOrigin={[0.5, 0.5]}
     >
+      <GraphHotkeys/>
+
       {/* Background */}
       <Background color="#ccc" variant={BackgroundVariant.Dots} />
 
