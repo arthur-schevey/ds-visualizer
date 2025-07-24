@@ -1,4 +1,4 @@
-import type { GraphNode } from "../types";
+import type { GraphNode, GraphUiMode } from "../types";
 import { getNodeMap } from "@graph/utils/graph";
 import { initGraphNode, useGraphStore } from "./graphStore";
 
@@ -50,4 +50,10 @@ export const graphAPI = {
       nodeCounter: 1,
     });
   },
+
+  setUiMode: (mode: GraphUiMode) => {
+    useGraphStore.setState({
+      uiMode: mode,
+    });
+  }
 };

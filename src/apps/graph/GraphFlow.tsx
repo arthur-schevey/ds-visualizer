@@ -4,6 +4,7 @@ import {
   BackgroundVariant,
   useReactFlow,
   ReactFlowProvider,
+  Panel,
 } from "@xyflow/react";
 import { createNode } from "./utils/graph";
 import { useGraphStore, type GraphStore } from "@graph/stores/graphStore";
@@ -13,6 +14,7 @@ import GraphNodeComponent from "./GraphNode";
 import GraphConnectionLine from "./GraphConnectionLine";
 import { useGraphFlowHandlers } from "./utils/useGraphFlowHandlers";
 import { graphAPI } from "./stores/graphAPI";
+import { GraphHeader } from "./GraphHeader";
 
 const selector = (state: GraphStore) => ({
   nodes: state.nodes,
@@ -43,10 +45,11 @@ const GraphFlowInner = () => {
   const handleCanvasDoubleClick = (
     event: React.MouseEvent<HTMLDivElement>
   ): void => {
-    // Ignore double click if mouse over node or edge
+    // Ignore double click if mouse over node, edge, or floating panels. This may need to be reworked.
     const isNode = (event.target as HTMLElement).closest(".react-flow__node");
     const isEdge = (event.target as HTMLElement).closest(".react-flow__edge");
-    if (isNode || isEdge) return;
+    const isPanel = (event.target as HTMLElement).closest(".react-flow__panel");
+    if (isNode || isEdge || isPanel) return;
 
     const pos = screenToFlowPosition({ x: event.clientX, y: event.clientY });
     const node = createNode(nodeCounter.toString(), pos);
@@ -78,6 +81,11 @@ const GraphFlowInner = () => {
     >
       {/* Background */}
       <Background color="#ccc" variant={BackgroundVariant.Dots} />
+
+      {/* Header */}
+      <Panel position="top-center">
+        <GraphHeader />
+      </Panel>
     </ReactFlow>
   );
 };

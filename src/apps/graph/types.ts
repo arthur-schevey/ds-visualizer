@@ -11,3 +11,5 @@ export type GraphNodeData = {
 export type GraphEdgeData = {
   weight: number;
 };
+
+export type GraphUiMode = "move" | "draw"

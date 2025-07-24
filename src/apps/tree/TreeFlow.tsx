@@ -1,5 +1,5 @@
 import { ReactFlow, Panel, Background, BackgroundVariant, ConnectionMode } from "@xyflow/react"
-import { TreeInput } from "./TreeInputHeader"
+import { TreeInput } from "./TreeHeader"
 import { useShallow } from "zustand/shallow"
 import { useTreeStore, type TreeStore } from "@tree/stores/treeStore"
 import TreeNodeComponent from "./TreeNode"

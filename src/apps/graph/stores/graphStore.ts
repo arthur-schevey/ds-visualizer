@@ -7,7 +7,11 @@ export interface GraphStore {
   nodes: GraphNode[];
   edges: GraphEdge[];
   nodeCounter: number;
+  weighted: boolean;
+  directed: boolean;
+  uiMode: "move" | "draw"
 
+  // Mimics React set function that accepts the next state OR function that calculates next state
   setNodes: (nodes: GraphNode[] | ((prev: GraphNode[]) => GraphNode[])) => void;
   setEdges: (edges: GraphEdge[] | ((prev: GraphEdge[]) => GraphEdge[])) => void;
 }
@@ -24,6 +28,9 @@ const createGraphStore: StateCreator<GraphStore> = (set) => ({
   nodes: [initGraphNode],
   edges: [],
   nodeCounter: 1,
+  weighted: false,
+  directed: true,
+  uiMode: "move",
 
   setNodes: (updater) =>
     set((state) => ({

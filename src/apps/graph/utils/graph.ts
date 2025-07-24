@@ -4,12 +4,14 @@ import type { GraphNode } from "../types";
 export const getNodeMap = (nodes: GraphNode[]) =>
   Object.fromEntries(nodes.map((n) => [n.id, n]));
 
-export const createNode = (value: string = "None", position: XYPosition = { x: 0, y: 0 }): GraphNode => {
+export const createNode = (value: string = "", position: XYPosition = { x: 0, y: 0 }): GraphNode => {
   return {
     id: crypto.randomUUID(),
     className: "nopan", // disallows interacting viewport when hovering node
     type: "graphNode",
     position: position,
+    draggable: true,
+    connectable: false,
     data: {
       value: value,
       neighbors: []
@@ -28,7 +30,7 @@ function getNodeIntersection(sourceNode: InternalNode, targetNode: InternalNode)
   const width = sourceNode.measured.width;
   const r = width / 2;
 
-  // The origin of the node is top left, so we will adjust it by `r` to obtain the center point
+  // The internalorigin of the node is top left, so we will adjust it by `r` to obtain the center point
   const sourceNodeOrigin = sourceNode.internals.positionAbsolute;
   const targetNodeOrigin = targetNode.internals.positionAbsolute;
 

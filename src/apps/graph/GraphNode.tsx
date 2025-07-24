@@ -5,9 +5,11 @@ import clsx from "clsx";
 import type { GraphNode } from "./types";
 import { graphAPI } from "./stores/graphAPI";
 import { EditableLabel } from "@shared/EditableLabel";
+import { useGraphStore } from "./stores/graphStore";
 
 const GraphNodeComponent = ({ id, selected, data }: NodeProps<GraphNode>) => {
   const [editing, setEditing] = useState(false);
+  const uiMode = useGraphStore().uiMode
 
   return (
     <div
@@ -22,8 +24,8 @@ const GraphNodeComponent = ({ id, selected, data }: NodeProps<GraphNode>) => {
       />
 
       {/* Invisible/uninteractable handle required for edge connections */}
-      <Handle type="target" position={Position.Left} className={styles.graphHandle} />
-      <Handle type="source" position={Position.Left} className={styles.graphHandle} />
+      <Handle type="target" isConnectable={uiMode === "draw"} position={Position.Left} className={styles.graphHandle} />
+      <Handle type="source" isConnectable={uiMode === "draw"} position={Position.Left} className={styles.graphHandle} />
     </div>
   );
 };

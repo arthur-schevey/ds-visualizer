@@ -11,7 +11,7 @@ import {
 import { MdClear, MdOutlineContentCopy } from "react-icons/md";
 import type { TreeFormat } from "./types";
 import { IoEnterOutline } from "react-icons/io5";
-import styles from "./TreeInputHeader.module.css"
+import styles from "./TreeHeader.module.css"
 import { treeAPI } from "./stores/treeAPI";
 
 export const TreeInput = () => {
