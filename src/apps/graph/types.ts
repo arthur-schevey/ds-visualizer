@@ -5,7 +5,6 @@ export type GraphEdge = Edge<GraphEdgeData, "graphEdge">;
 
 export type GraphNodeData = {
   value: string;
-  neighbors: string[];
 };
 
 export type GraphEdgeData = {

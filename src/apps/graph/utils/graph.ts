@@ -1,5 +1,5 @@
 import type { InternalNode, XYPosition } from "@xyflow/react";
-import type { GraphNode } from "../types";
+import type { GraphEdge, GraphNode } from "../types";
 
 export const getNodeMap = (nodes: GraphNode[]) =>
   Object.fromEntries(nodes.map((n) => [n.id, n]));
@@ -12,10 +12,16 @@ export const createNode = (value: string = "", position: XYPosition = { x: 0, y:
     position: position,
     data: {
       value: value,
-      neighbors: []
     },
   };
 } 
+
+// Gets edge B->A given A->B, is undefined if does not exist
+export const getCounterpart = (edge: GraphEdge, edges: GraphEdge[]) => {
+  return edges.find(
+    (e) => e.source === edge.target && e.target === edge.source
+  );
+};
 
 // From the center of a circle and some target, find the point of intersection on the circle
 function getNodeIntersection(sourceNode: InternalNode, targetNode: InternalNode) {

@@ -2,6 +2,7 @@ import { create, type StateCreator } from "zustand";
 import { temporal } from "zundo";
 import { devtools } from "zustand/middleware";
 import type { GraphEdge, GraphNode } from "../types";
+import { createNode } from "@graph/utils/graph";
 
 export interface GraphStore {
   nodes: GraphNode[];
@@ -16,21 +17,13 @@ export interface GraphStore {
   setEdges: (edges: GraphEdge[] | ((prev: GraphEdge[]) => GraphEdge[])) => void;
 }
 
-export const initGraphNode: GraphNode = {
-  id: crypto.randomUUID(),
-  className: "nopan", // disallows panning viewport when hovering node
-  type: "graphNode",
-  position: { x: 0, y: 0 },
-  data: { value: "0", neighbors: [] },
-};
-
 const createGraphStore: StateCreator<GraphStore> = (set) => ({
-  nodes: [initGraphNode],
+  nodes: [createNode("0")],
   edges: [],
   nodeCounter: 1,
   weighted: false,
   directed: true,
-  uiMode: "move",
+  uiMode: "draw",
 
   setNodes: (updater) =>
     set((state) => ({

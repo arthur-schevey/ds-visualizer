@@ -17,19 +17,23 @@ _Project goal: A "Swiss Army knife" for students and educators to easily create 
 - [License](#license)
 
 ## Features
-
-- Construct binary tree
-- Modify node values
-- Node deletion + pruning
-- Undo-redo
-- Convert back and forth between tree and leetcode string
+- Binary Tree
+  - Modify node values
+  - Node deletion and pruning branches
+  - Undo-redo
+  - Convert back and forth between tree and leetcode string
+- Graph
+  - Modify node values
+  - Supports both directed/undirected graphs
+  - Toggleable weight labels
+  - `Space` to toggle between moving nodes and drawing edges
 
 ## Roadmap
 
-- Implement persistent storage
+- Introduction to explain usage and controls
+- Graph serialization
 - Layout/visual settings
 - Visualize traversal algorithms
-- Graph editor
 
 ## Tech
 
@@ -115,6 +119,23 @@ Uses Zustand for state management. Each app within the project should have its o
 We create a helper for each store called `use<AppName>Store` for the purpose of chaining middleware like `persist` for local storage persistence, `devtools` for use with Redux devtools browser extension, and `temporal` for enabling undo/redo. Otherwise, all store logic and initialization will be found in `create<AppName>Store`.
 
 When using the store, all we need is `const state = useTreeStore()`. However, in most cases, we'll want a `selector` to subscribe to desired parts of the store to prevent unnecessary rerenders. Additionally, it's important to use `useShallow(selector)` if the selector returns an object (which it almost always does) to prevent excessive rerenders and weird behavior.
+
+### Graph
+#### Directed/Undirected
+**In short**: The graph internally is directed, when the user switches to undirected it is just a directed graph that disallows counterdirectional edges (two nodes can't have two edges).
+
+The differences between the two modes can found in the following table:
+| Feature              | Directed   | Undirected
+| :------------------- | :--------- | :-----------
+| Add `A->B` to `A B`  | Add        | Add
+| Add `A->B` to `A->B` | Ignore     | Ignore
+| Add `B->A` to `A->B` | Add        | Ignore
+| Weight               | As normal  | As normal
+| Offset double edge   | As normal  | As normal (can't have double edge)
+| Arrow Marker         | Display    | Hide
+| Switch mode to...    | Do nothing | Drop an edge if double edge (loses information)
+
+*What this means* is that any undirected graph logic using the graph state (such as serialization or traversals) must coerce the directed graph into an undirected one. In other words, an edge `A->B` needs to be inferred as `A<->B`
 
 ## License
 

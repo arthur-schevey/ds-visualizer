@@ -8,12 +8,13 @@ import {
   MarkerType,
 } from "@xyflow/react";
 import { useCallback } from "react";
+import { getCounterpart } from "./graph";
 
 export function useGraphFlowHandlers() {
   const setNodes = useGraphStore((state) => state.setNodes);
   const setEdges = useGraphStore((state) => state.setEdges);
 
-  // Callback from React Flow to handle node additions, removals, selections, and dragging 
+  // Callback from React Flow to handle node additions, removals, selections, and dragging
   const handleNodesChange = useCallback(
     (changes: NodeChange<GraphNode>[]) => {
       setNodes((nodes) => applyNodeChanges(changes, nodes));
@@ -45,26 +46,39 @@ export function useGraphFlowHandlers() {
     [setEdges]
   );
 
-  // Callback from React Flow to handle successful drag connections 
+  // Callback from React Flow to handle successful drag connections
   const handleConnect = useCallback(
     (connection: Connection) => {
-      setEdges((prevEdges) =>
-        addEdge(
-          {
-            ...connection,
-            id: crypto.randomUUID(),
-            type: "graphEdge",
-            markerEnd: { type: MarkerType.Arrow },
-            data: {
-              weight: 1
-            }
+      const directed = useGraphStore.getState().directed;
+
+      setEdges((prevEdges) => {
+
+        const counterpart = getCounterpart(connection as GraphEdge, prevEdges)
+        
+        if (!directed && counterpart) {
+          return prevEdges
+        }
+
+        const newEdge: GraphEdge = {
+          ...connection,
+          id: crypto.randomUUID(),
+          type: "graphEdge",
+          markerEnd: { type: MarkerType.Arrow },
+          data: {
+            weight: 1,
           },
-          prevEdges
-        )
-      );
+        };
+
+        return addEdge(newEdge, prevEdges);
+      });
     },
     [setEdges]
   );
 
-  return { handleNodesChange, handleNodesDelete, handleEdgesDelete, handleConnect };
+  return {
+    handleNodesChange,
+    handleNodesDelete,
+    handleEdgesDelete,
+    handleConnect,
+  };
 }

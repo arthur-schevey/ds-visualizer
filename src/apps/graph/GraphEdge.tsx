@@ -22,7 +22,8 @@ function GraphEdgeComponent({
   const targetNode = useInternalNode(target);
 
   // Determine if weights are set to be visible
-  const weighted = useGraphStore((state) => state.weighted)
+  const weighted = useGraphStore((state) => state.weighted);
+  const directed = useGraphStore((state) => state.directed);
 
   // Weight editing logic
   const [editing, setEditing] = useState(false);
@@ -69,7 +70,7 @@ function GraphEdgeComponent({
     return null;
   }
 
-  // Determine if a counter-directional edge exists
+  // Determine if a counter-directional edge exists (only matters for directed) to offset
   const edges = useGraphStore.getState().edges;
   const hasCounterpart = edges.some(
     (e) => e.source === target && e.target === source
@@ -78,11 +79,14 @@ function GraphEdgeComponent({
   const [edgePath, labelX, labelY] = getStraightPath(
     getEdgePathCoordinates(sourceNode, targetNode, hasCounterpart)
   );
-  
 
   return (
     <>
-      <BaseEdge id={id} path={edgePath} markerEnd={"url(#arrowhead)"} />
+      <BaseEdge
+        id={id}
+        path={edgePath}
+        markerEnd={directed ? "url(#arrowhead)" : ""}
+      />
       <path
         d={edgePath}
         fill="none"

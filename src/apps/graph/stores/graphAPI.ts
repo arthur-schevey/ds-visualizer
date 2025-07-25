@@ -1,6 +1,6 @@
 import type { GraphNode, GraphUiMode } from "../types";
-import { getNodeMap } from "@graph/utils/graph";
-import { initGraphNode, useGraphStore } from "./graphStore";
+import { createNode, getCounterpart, getNodeMap } from "@graph/utils/graph";
+import { useGraphStore } from "./graphStore";
 
 export const graphAPI = {
   updateNodeLabel: (id: string, label: string) => {
@@ -42,7 +42,7 @@ export const graphAPI = {
 
   resetGraph: () => {
     useGraphStore.setState({
-      nodes: [initGraphNode],
+      nodes: [createNode("0")],
       edges: [],
       nodeCounter: 1,
     });
@@ -61,8 +61,22 @@ export const graphAPI = {
   },
 
   setDirected: (directed: boolean) => {
+    let { edges } = useGraphStore.getState();
+
+    // When switching to undirected, drop counterdirectional edges
+    if (!directed) {
+      edges = edges.filter((edge) => {
+        // Undefined if no counterpart exists
+        const counterpart = getCounterpart(edge, edges)
+
+        return !counterpart || edge.id < counterpart.id;
+      });
+    }
+
     useGraphStore.setState({
+      edges,
       directed,
     });
   },
 };
+
