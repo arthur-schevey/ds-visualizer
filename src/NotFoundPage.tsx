@@ -2,7 +2,7 @@ import { Result } from "antd"
 
 const NotFoundPage = () => {
   return (
-    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#ccc'}}>
+    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%'}}>
       <Result
         status="404"
         title={<div style={{ color: '#eee' }}>404</div>}
