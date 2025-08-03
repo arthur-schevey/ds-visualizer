@@ -1,6 +1,6 @@
 import { create, type StateCreator } from "zustand";
 import { temporal } from "zundo";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 import type { GraphEdge, GraphNode } from "../types";
 import { createNode } from "@graph/utils/graph";
 
@@ -38,7 +38,6 @@ const createGraphStore: StateCreator<GraphStore> = (set) => ({
 export const useGraphStore = create<GraphStore>()(
   // Utilizes persist middleware to store tree data in local storage
   // Utilizes temporal middleware from zundo to allow undo/redo
-  // persist(temporal(createGraphStore, {}), { name: "graph-storage")
-  devtools(temporal(createGraphStore, {}))
+  devtools(persist(temporal(createGraphStore, {}), { name: "graph-storage" }))
 );
  
