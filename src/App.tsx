@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import TreeFlow from "./apps/tree/TreeFlow";
 import GraphFlow from "./apps/graph/GraphFlow";
 import Layout from "@shared/components/Layout";
+import NotFoundPage from "./NotFoundPage";
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
           <Route path="/" element={<Navigate to="/tree" replace />} />
           <Route path="/tree" element={<TreeFlow />} />
           <Route path="/graph" element={<GraphFlow />} />
+          <Route path="/*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
