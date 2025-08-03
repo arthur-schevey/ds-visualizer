@@ -7,13 +7,12 @@
  * @returns The layout structure for the app, including navigation, content outlet, and footer.
  */
 import "@xyflow/react/dist/style.css";
-import { Menu, Tag, Tooltip, type MenuProps } from "antd";
-import { AiOutlineGithub } from "react-icons/ai";
-import { APP_VERSION } from "@shared/version";
+import { Menu, type MenuProps } from "antd";
 import { PiGraph } from "react-icons/pi";
 import { TbBinaryTree } from "react-icons/tb";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useLocation } from "react-router";
 import { SVGDefs } from "@shared/components/SVGDefs";
+import Footer from "./Footer";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -32,6 +31,15 @@ const items: MenuItem[] = [
 
 
 function Layout() {
+  const location = useLocation();
+
+  // Extract route identifier based on pathname for footer
+  const route = (() => {
+    if (location.pathname.startsWith('/graph')) return 'graph';
+    if (location.pathname.startsWith('/tree')) return 'tree';
+    return 'default';
+  })();
+
   return (
     <div
       style={{
@@ -44,22 +52,8 @@ function Layout() {
       <Menu mode="horizontal" items={items} />
       <SVGDefs />
       <Outlet />
-
-      {/* Version and GitHub link */}
-      <div className="floating-footer">
-        <Tag>v{APP_VERSION}</Tag>
-
-        <Tooltip title="View on GitHub">
-          <a
-            href="https://github.com/arthur-schevey/ds-visualizer"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub Repository"
-          >
-            <Tag icon={<AiOutlineGithub style={{ fontSize: "20px" }} />} />
-          </a>
-        </Tooltip>
-      </div>
+      
+      <Footer route={route}/>
     </div>
   );
 }
