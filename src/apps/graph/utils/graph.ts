@@ -1,6 +1,7 @@
 import type { InternalNode, XYPosition } from "@xyflow/react";
 import type { GraphEdge, GraphNode } from "../types";
 
+// Converts array of nodes to dictionary
 export const getNodeMap = (nodes: GraphNode[]) =>
   Object.fromEntries(nodes.map((n) => [n.id, n]));
 

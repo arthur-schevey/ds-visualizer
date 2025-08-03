@@ -9,11 +9,11 @@
 import "@xyflow/react/dist/style.css";
 import { Menu, Tag, Tooltip, type MenuProps } from "antd";
 import { AiOutlineGithub } from "react-icons/ai";
-import { APP_VERSION } from "./version";
+import { APP_VERSION } from "@shared/version";
 import { PiGraph } from "react-icons/pi";
 import { TbBinaryTree } from "react-icons/tb";
 import { Link, Outlet } from "react-router";
-import { SVGDefs } from "./SVGDefs";
+import { SVGDefs } from "@shared/components/SVGDefs";
 
 type MenuItem = Required<MenuProps>["items"][number];
 

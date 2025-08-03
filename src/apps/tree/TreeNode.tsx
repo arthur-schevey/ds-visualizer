@@ -3,9 +3,9 @@ import { useState } from "react";
 import styles from "./TreeNode.module.css";
 import clsx from "clsx";
 import type { TreeNode } from "./types";
-import { PlusIcon } from "@shared/SVGDefs";
+import { PlusIcon } from "@shared/components/SVGDefs";
 import { treeAPI } from "./stores/treeAPI";
-import { EditableLabel } from "@shared/EditableLabel";
+import { EditableLabel } from "@shared/components/EditableLabel";
 
 const TreeNodeComponent = ({ id, selected, data }: NodeProps<TreeNode>) => {
 

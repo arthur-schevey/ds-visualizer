@@ -16,6 +16,7 @@ import { useGraphFlowHandlers } from "./utils/useGraphFlowHandlers";
 import { graphAPI } from "./stores/graphAPI";
 import { GraphHeader } from "./GraphHeader";
 import { GraphHotkeys } from "./GraphHotkeys";
+import GraphPanel from "./GraphPanel";
 
 const selector = (state: GraphStore) => ({
   nodes: state.nodes,
@@ -85,9 +86,13 @@ const GraphFlowInner = () => {
       {/* Background */}
       <Background color="#ccc" variant={BackgroundVariant.Dots} />
 
-      {/* Header */}
+      {/* User panels */}
       <Panel position="top-center">
         <GraphHeader />
+      </Panel>
+
+      <Panel position="top-left">
+        <GraphPanel />
       </Panel>
     </ReactFlow>
   );

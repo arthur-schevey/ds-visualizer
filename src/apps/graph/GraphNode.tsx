@@ -4,7 +4,7 @@ import styles from "./GraphNode.module.css"
 import clsx from "clsx";
 import type { GraphNode } from "./types";
 import { graphAPI } from "./stores/graphAPI";
-import { EditableLabel } from "@shared/EditableLabel";
+import { EditableLabel } from "@shared/components/EditableLabel";
 import { useGraphStore } from "./stores/graphStore";
 
 const GraphNodeComponent = ({ id, selected, data }: NodeProps<GraphNode>) => {

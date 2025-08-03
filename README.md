@@ -108,7 +108,7 @@ Not yet implemented. The layout will be decided by the user. There may be an opt
 
 Regarding edge creation, we needed something slightly more sophisticated than trees to draw connections, show an arrow, and most importantly visually distinguish bidirectional edges.
 
-1. Drawing connections/edges (left side of image): An edge between circles is best described by a line from the two closest points of two circles. To get these closest points, we need to calculate the unit vector from some source position to a target and march the source position `r` units. Lastly, this needs to be repeated from the opposite direction.
+1. Drawing connections/edges (left side of image): An edge between circles is best described by a line from the two closest points of two circles. To get these closest points, we need to calculate the unit vector from some source position to a target and march the source position `r` units along the vector. Additionally, this needs to be repeated from the opposite direction.
 2. Offsetting bidirectional edges (right side of image): To avoid edges stacking on top of each other, we need to move the points perpendicular `distance` units. To do this, we first rotate the vector of each line 90°, calculate the unit vector, then march each point `distance` units. 
 
 ![Left: Demonstrates vector from source to target and finding the intersection point on a circle. Right: Demonstrates rotating an edge to obtain the perpendicular vector.](public/edge-vector-demo.png)

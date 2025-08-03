@@ -12,3 +12,10 @@ export type GraphEdgeData = {
 };
 
 export type GraphUiMode = "move" | "draw"
+
+// Serialization types
+export type GraphFormat = "json" | "edge-list" | "node-edge-list";
+export type SerializedGraph = {
+  header?: string; // for displaying node count and edge count 
+  body: string; // main serialization result
+};

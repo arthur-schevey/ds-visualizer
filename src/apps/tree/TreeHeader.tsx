@@ -13,6 +13,10 @@ import type { TreeFormat } from "./types";
 import { IoEnterOutline } from "react-icons/io5";
 import styles from "./TreeHeader.module.css"
 import { treeAPI } from "./stores/treeAPI";
+import { notify } from "@shared/notify";
+import ButtonDownload from "@shared/components/ButtonDownload";
+import ButtonReset from "@shared/components/ButtonReset";
+import ButtonCopy from "@shared/components/ButtonCopy";
 
 export const TreeInput = () => {
   const { nodes, rootId } = useTreeStore();
@@ -29,7 +33,7 @@ export const TreeInput = () => {
         } catch (error) {
           setInputValue(serialize("leetcode", nodes, rootId));
           setFormat("leetcode");
-          leetcodeWarnNotification();
+          notify.leetcodeWarn();
           console.error(error);
         }
         break;
@@ -64,32 +68,6 @@ export const TreeInput = () => {
     }
   };
 
-  const copyNotification = () => {
-    notification.success({
-      message: "Copied to clipboard",
-      duration: 1.5,
-    });
-  };
-
-  const copyErrNotification = (err: Error) => {
-    notification.success({
-      message: "Error copying to clipboard",
-      description: "Error:" + err.message,
-      showProgress: true,
-      duration: 4,
-    });
-  };
-
-  const leetcodeWarnNotification = () => {
-    notification.warning({
-      message: "Format changed",
-      description:
-        "LeetCode strings do not support non-numeric node values so your format has been automatically switched to allow quotes. If you want to return to the standard LeetCode format, remove any non-numeric values.",
-      showProgress: true,
-      duration: 9,
-    });
-  };
-
   return (
     <div
       className={styles.header}
@@ -116,26 +94,9 @@ export const TreeInput = () => {
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
       />
-      <Button
-        type="primary"
-        size="large"
-        onClick={() =>
-          navigator.clipboard
-            .writeText(inputValue)
-            .then(copyNotification)
-            .catch((err) => copyErrNotification(err))
-        }
-        icon={<MdOutlineContentCopy fontSize={"24px"} />}
-      />
-
-      <Popconfirm title="Reset tree?" onConfirm={treeAPI.resetTree} okText="Yes">
-        <Button
-          danger
-          type="default"
-          size="large"
-          icon={<MdClear fontSize={"24px"} />}
-        />
-      </Popconfirm>
+      <ButtonCopy text={inputValue}/>
+      <ButtonDownload text={inputValue}/>
+      <ButtonReset onClick={treeAPI.resetTree} popMessage="Reset tree?"/>
     </div>
   );
 };
