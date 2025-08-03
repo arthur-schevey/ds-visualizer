@@ -14,10 +14,12 @@ export function useGraphFlowHandlers() {
   const setNodes = useGraphStore((state) => state.setNodes);
   const setEdges = useGraphStore((state) => state.setEdges);
 
-  // Callback from React Flow to handle node additions, removals, selections, and dragging
+  // Callback from React Flow to handle node selections and drags
   const handleNodesChange = useCallback(
     (changes: NodeChange<GraphNode>[]) => {
+      useGraphStore.temporal.getState().pause() // ignores changes for undo/redo
       setNodes((nodes) => applyNodeChanges(changes, nodes));
+      useGraphStore.temporal.getState().resume()
     },
     [setNodes]
   );

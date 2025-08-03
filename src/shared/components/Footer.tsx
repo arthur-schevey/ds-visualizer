@@ -81,7 +81,7 @@ const Footer = ({ route }: { route: Route }) => {
         closable={{ "aria-label": "Custom Close Button" }}
         title={<Text type="secondary" italic>First time? </Text>}
         open={showHelp}
-        footer={<></>}
+        footer={null}
         style={{ top: 150 }}
         onOk={() => setShowHelp(false)}
         onCancel={() => setShowHelp(false)}
