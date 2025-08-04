@@ -2,10 +2,10 @@ import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { useState } from "react";
 import styles from "./GraphNode.module.css"
 import clsx from "clsx";
-import type { GraphNode } from "./types";
-import { graphAPI } from "./stores/graphAPI";
+import type { GraphNode } from "../types";
+import { graphAPI } from "../stores/graphAPI";
 import { EditableLabel } from "@shared/components/EditableLabel";
-import { useGraphStore } from "./stores/graphStore";
+import { useGraphStore } from "../stores/graphStore";
 
 const GraphNodeComponent = ({ id, selected, data }: NodeProps<GraphNode>) => {
   const [editing, setEditing] = useState(false);

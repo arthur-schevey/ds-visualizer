@@ -30,8 +30,6 @@ _Project goal: A "Swiss Army knife" for students and educators to easily create 
 
 ## Roadmap
 
-- Introduction to explain usage and controls
-- Graph serialization
 - Layout/visual settings
 - Visualize traversal algorithms
 
@@ -99,7 +97,7 @@ From there, each app (or feature) has its own folder to serve as its domain cons
 #### Binary Tree Layout
 By default, `d3-hierarchy` lays out a lone child directly below the parent as seen in the left tree. In order to circumvent this behavior to look more like a binary tree, we must give each node *without* a sibling a "dummy" sibling during the layouting procedure. Leaf nodes must not have any dummy children to prevent "spreading" out the tree.
 
-![Left tree: single left child is positioned directly below root. Right tree: single left child is positioned to the left as you would expect for a binary tree, due to an invisible dummy node acting as the right child.](public/tree-layout-demo.png)
+![Left tree: single left child is positioned directly below root. Right tree: single left child is positioned to the left as you would expect for a binary tree, due to an invisible dummy node acting as the right child.](public/images/tree-layout-demo.png)
 
 Additionally, d3-hierarchy will order children as they are recieved, so it is important to distinguish a lone left child from a lone right child by placing the dummy node accordingly.
 
@@ -111,7 +109,7 @@ Regarding edge creation, we needed something slightly more sophisticated than tr
 1. Drawing connections/edges (left side of image): An edge between circles is best described by a line from the two closest points of two circles. To get these closest points, we need to calculate the unit vector from some source position to a target and march the source position `r` units along the vector. Additionally, this needs to be repeated from the opposite direction.
 2. Offsetting bidirectional edges (right side of image): To avoid edges stacking on top of each other, we need to move the points perpendicular `distance` units. To do this, we first rotate the vector of each line 90°, calculate the unit vector, then march each point `distance` units. 
 
-![Left: Demonstrates vector from source to target and finding the intersection point on a circle. Right: Demonstrates rotating an edge to obtain the perpendicular vector.](public/edge-vector-demo.png)
+![Left: Demonstrates vector from source to target and finding the intersection point on a circle. Right: Demonstrates rotating an edge to obtain the perpendicular vector.](public/images/edge-vector-demo.png)
 
 ### State Management
 Uses Zustand for state management. Each app within the project should have its own store independent of other apps. 

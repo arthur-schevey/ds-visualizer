@@ -5,12 +5,12 @@ import {
   useInternalNode,
   type EdgeProps,
 } from "@xyflow/react";
-import { calculateEdgePathCoordinates as getEdgePathCoordinates } from "./utils/graph";
+import { calculateEdgePathCoordinates as getEdgePathCoordinates } from "../utils/graph";
 import { useGraphStore } from "@graph/stores/graphStore";
 import styles from "./GraphEdge.module.css";
-import type { GraphEdge } from "./types";
+import type { GraphEdge } from "../types";
 import { useEffect, useRef, useState } from "react";
-import { graphAPI } from "./stores/graphAPI";
+import { graphAPI } from "../stores/graphAPI";
 
 function GraphEdgeComponent({
   id,

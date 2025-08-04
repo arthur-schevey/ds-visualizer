@@ -1,6 +1,6 @@
 import { useHotkeys } from "react-hotkeys-hook";
-import { useGraphStore } from "./stores/graphStore";
-import { graphAPI } from "./stores/graphAPI";
+import { useGraphStore } from "../stores/graphStore";
+import { graphAPI } from "../stores/graphAPI";
 
 export const GraphHotkeys = () => {
 

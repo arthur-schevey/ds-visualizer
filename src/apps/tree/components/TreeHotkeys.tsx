@@ -1,6 +1,6 @@
 import { useHotkeys } from "react-hotkeys-hook";
 import { useTreeStore } from "@tree/stores/treeStore";
-import { treeAPI } from "./stores/treeAPI";
+import { treeAPI } from "../stores/treeAPI";
 
 export const TreeHotkeys = () => {
   const { undo, redo } = useTreeStore.temporal.getState();

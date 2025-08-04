@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useTreeStore } from "@tree/stores/treeStore";
-import { deserialize, serialize } from "./utils/tree";
+import { deserialize, serialize } from "../utils/tree";
 import {
   Input,
   Select,
 } from "antd";
-import type { TreeFormat } from "./types";
+import type { TreeFormat } from "../types";
 import { IoEnterOutline } from "react-icons/io5";
 import styles from "./TreeHeader.module.css"
-import { treeAPI } from "./stores/treeAPI";
+import { treeAPI } from "../stores/treeAPI";
 import { notify } from "@shared/notify";
 import ButtonDownload from "@shared/components/ButtonDownload";
 import ButtonReset from "@shared/components/ButtonReset";

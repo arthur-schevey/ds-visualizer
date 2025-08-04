@@ -6,14 +6,14 @@ import {
   ReactFlowProvider,
   Panel,
 } from "@xyflow/react";
-import { createNode } from "./utils/graph";
+import { createNode } from "../utils/graph";
 import { useGraphStore, type GraphStore } from "@graph/stores/graphStore";
 import { useShallow } from "zustand/shallow";
 import GraphEdgeComponent from "./GraphEdge";
 import GraphNodeComponent from "./GraphNode";
 import GraphConnectionLine from "./GraphConnectionLine";
-import { useGraphFlowHandlers } from "./utils/useGraphFlowHandlers";
-import { graphAPI } from "./stores/graphAPI";
+import { useGraphFlowHandlers } from "../utils/useGraphFlowHandlers";
+import { graphAPI } from "../stores/graphAPI";
 import { GraphHeader } from "./GraphHeader";
 import { GraphHotkeys } from "./GraphHotkeys";
 import GraphPanel from "./GraphPanel";

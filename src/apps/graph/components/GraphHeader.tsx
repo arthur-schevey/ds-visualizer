@@ -6,9 +6,9 @@ import {
 import styles from "./GraphHeader.module.css";
 import { LuMove } from "react-icons/lu";
 import { TbPencilUp } from "react-icons/tb";
-import { graphAPI } from "./stores/graphAPI";
-import type { GraphUiMode } from "./types";
-import { useGraphStore, type GraphStore } from "./stores/graphStore";
+import { graphAPI } from "../stores/graphAPI";
+import type { GraphUiMode } from "../types";
+import { useGraphStore, type GraphStore } from "../stores/graphStore";
 import { useShallow } from "zustand/shallow";
 
 const selector = (state: GraphStore) => ({

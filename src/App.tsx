@@ -1,9 +1,9 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import TreeFlow from "./apps/tree/TreeFlow";
-import GraphFlow from "./apps/graph/GraphFlow";
 import Layout from "@shared/components/Layout";
 import NotFoundPage from "./NotFoundPage";
 import MobileUnsupportedPage from "./MobileUnsupportedPage";
+import TreePage from "@tree/TreePage";
+import GraphPage from "@graph/GraphPage";
 
 export default function App() {
   
@@ -14,8 +14,8 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/tree" replace />} />
-          <Route path="/tree" element={<TreeFlow />} />
-          <Route path="/graph" element={<GraphFlow />} />
+          <Route path="/tree" element={<TreePage />} />
+          <Route path="/graph" element={<GraphPage />} />
           <Route path="/*" element={<NotFoundPage />} />
         </Route>
       </Routes>

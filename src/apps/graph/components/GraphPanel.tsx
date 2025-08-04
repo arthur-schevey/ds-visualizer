@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useGraphStore, type GraphStore } from "./stores/graphStore";
+import { useGraphStore, type GraphStore } from "../stores/graphStore";
 import { useShallow } from "zustand/shallow";
-import { serialize } from "./utils/serialize";
+import { serialize } from "../utils/serialize";
 import TextArea from "antd/es/input/TextArea";
-import type { GraphFormat } from "./types";
+import type { GraphFormat } from "../types";
 import { Divider, Select, Typography } from "antd";
 import styles from "./GraphPanel.module.css";
-import { graphAPI } from "./stores/graphAPI";
+import { graphAPI } from "../stores/graphAPI";
 import ButtonCopy from "@shared/components/ButtonCopy";
 import ButtonDownload from "@shared/components/ButtonDownload";
 import ButtonReset from "@shared/components/ButtonReset";

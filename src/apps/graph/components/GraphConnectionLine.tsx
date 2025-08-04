@@ -1,5 +1,5 @@
 import { getStraightPath, type ConnectionLineComponentProps, type InternalNode } from '@xyflow/react';
-import { getEdgeParams } from './utils/graph';
+import { getEdgeParams } from '@graph/utils/graph';
 
 function GraphConnectionLine({ toX, toY, fromNode, toNode }: ConnectionLineComponentProps) {
   if (!fromNode) {

@@ -4,7 +4,7 @@ import { useShallow } from "zustand/shallow"
 import { useTreeStore, type TreeStore } from "@tree/stores/treeStore"
 import TreeNodeComponent from "./TreeNode"
 import { TreeHotkeys } from "./TreeHotkeys"
-import { useTreeFlowHandlers } from "./utils/useTreeFlowHandlers"
+import { useTreeFlowHandlers } from "../utils/useTreeFlowHandlers"
 
 const selector = (state: TreeStore) => ({
   nodes: state.nodes,
