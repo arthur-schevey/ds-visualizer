@@ -1,8 +1,8 @@
 # Data Structure Visualizer
 
-Allows the user to construct a binary tree and change values.
+Create beautiful binary trees and graphs, and view their data in multiple formats.
 
-_Project goal: A "Swiss Army knife" for students and educators to easily create diagrams and problem inputs (e.g. leetcode) for common data structures, notably trees and graphs._
+_Project goal: A "Swiss Army knife" for students and educators to easily create diagrams and problem inputs (e.g. leetcode) for common data structures and problems, notably trees and graphs._
 
 ## Table of Contents
 - [Features](#features)
@@ -14,38 +14,42 @@ _Project goal: A "Swiss Army knife" for students and educators to easily create 
   - [Project Structure](#project-structure)
   - [Layout System](#layouting)
   - [State Management](#state-management)
+- [Contributing](#contributing)
 - [License](#license)
 
 ## Features
-- Binary Tree
-  - Modify node values
-  - Node deletion and pruning branches
-  - Undo-redo
-  - Convert back and forth between tree and leetcode string
-- Graph
-  - Modify node values
-  - Supports both directed/undirected graphs
-  - Toggleable weight labels
+- Binary tree creator
+- Graph creator
   - `Space` to toggle between moving nodes and drawing edges
+  - Weighted/unweighted/directed/undirected
+- Copy or download data as file
+- `Double Click` to modify values
+- Reset/delete/prune nodes
+- Data format selection
+- Undo/redo
+- Local storage persistence
 
 ## Roadmap
-
 - Layout/visual settings
+- Tree/graph randomizer
 - Visualize traversal algorithms
 
 ## Tech
 
 - [React TypeScript]() - Frontend
-- [React Flow]() - Node based library
-- [React Router]() - Enables pagination
-- [Zustand]() - State management + Local storage persistence
+- [React Flow](https://reactflow.dev/) - Node based library
+- [Ant Design](https://ant.design/) - Component library of choice
+- [Zustand](https://github.com/pmndrs/zustand) - State management + Local storage persistence
 
 ### Other dependencies
 
-- [d3-hierarchy]() - Layouting library for tree-like structures
-- [clsx]() - Enables construction of conditional `className` strings
-- [zundo]() - Middleware provides support for temporal state management (undo/redo)
-- [react-hotkeys-hook]() - Enables hotkey listening
+- [React Router](https://reactrouter.com/) - Enables pagination
+- [d3-hierarchy](https://d3js.org/d3-hierarchy) - Layouting library for tree-like structures
+- [clsx](https://www.npmjs.com/package/clsx) - Enables construction of conditional `className` strings
+- [zundo](https://www.npmjs.com/package/zundo) - Middleware provides support for temporal state management (undo/redo)
+- [react-hotkeys-hook](https://www.npmjs.com/package/react-hotkeys-hook) - Enables hotkey listening
+- [react-icons](https://react-icons.github.io/react-icons/) - Icons from numerous libraries
+
 
 ## Run Locally
 
@@ -80,7 +84,7 @@ Start the server
 
 ## Docs
 ### Project Structure
-*This is still in early development and the structure is subject to change.*
+*This project is fairly new, therefore the structure is open to change.*
 
 That being said, as with most React applications, the entry point of the program is `main.tsx` which renders `App.tsx`—our router. 
 
@@ -134,6 +138,18 @@ The differences between the two modes can found in the following table:
 | Switch mode to...    | Do nothing | Drop an edge if double edge (loses information)
 
 *What this means* is that any undirected graph logic using the graph state (such as serialization or traversals) must coerce the directed graph into an undirected one. In other words, an edge `A->B` needs to be inferred as `A<->B`
+
+## Contributing
+
+Contributions are always desired! Just make sure to open an issue or any method that you believe to be best to make sure your work doesn't go unutilized.
+
+Ways to contribute:
+- Create an issue (ideas/bug reports are desired)
+- Document how stuff works (great way to learn the codebase)
+- Suggest best practices
+- Tackle an issue and say you want to work on it
+
+See `contributing.md` for more info
 
 ## License
 
