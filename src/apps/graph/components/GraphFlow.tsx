@@ -37,7 +37,6 @@ const GraphFlowInner = () => {
     handleNodesChange,
     handleNodesDelete,
     handleEdgesChange,
-    handleEdgesDelete,
     handleConnect,
   } = useGraphFlowHandlers();
   const { nodes, edges, nodeCounter } = useGraphStore(
@@ -76,7 +75,6 @@ const GraphFlowInner = () => {
       onNodesChange={handleNodesChange}
       onNodesDelete={handleNodesDelete}
       onEdgesChange={handleEdgesChange}
-      // onEdgesDelete={handleEdgesDelete}
       onConnect={handleConnect}
       connectionDragThreshold={10}
       connectionLineComponent={GraphConnectionLine}
