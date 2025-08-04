@@ -28,16 +28,7 @@ As of v1, ds-chef will adhere to [Conventional Commits](https://www.conventional
 2. Before merging to main, it's important to bump the version in package.json and others since it's displayed in the app. This will automatically create a tagged commit. 
     ```bash
     npm version <newversion> | minor | patch
+    git push origin dev --follow-tags
     ```
-3. Merge `dev` to `main` and test the app locally.
-    ```bash
-    git checkout main
-    git pull origin main
-    git merge dev
-    ```
-4. Push changes and tag
-    ```
-    git push origin main
-    git push origin v1.x.x # only if the tag wasn’t pushed automatically, otherwise unnecessary
-    ```
-5. Create a GitHub release with changelog/description
+3. Create a PR from `dev` to `main`.
+4. Create a GitHub release with changelog/description
