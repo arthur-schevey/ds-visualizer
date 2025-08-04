@@ -81,6 +81,7 @@ const GraphFlowInner = () => {
       proOptions={{ hideAttribution: true }}
       nodeOrigin={[0.5, 0.5]}
     >
+      <title>Graph Editor</title>
       <GraphHotkeys/>
 
       {/* Background */}
