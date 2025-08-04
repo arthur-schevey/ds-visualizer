@@ -14,6 +14,7 @@ const ButtonCopy = ({ text }: { text: string }) => {
           .catch((err) => notify.copyErr(err))
       }
       icon={<MdOutlineContentCopy fontSize={"24px"} />}
+      aria-label="Copy tool output"
     />
   )
 }

@@ -18,6 +18,7 @@ const ButtonDownload = ({ text }: { text: string }) => {
       size="large"
       onClick={() => {saveTextAsFile(text); notify.download()}}
       icon={<MdOutlineFileDownload fontSize={"24px"} />}
+      aria-label="Download tool output"
     />
   );
 };

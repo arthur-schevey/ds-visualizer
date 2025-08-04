@@ -13,6 +13,7 @@ const ButtonReset = ({ onClick, popMessage }: { onClick: () => void; popMessage:
         type="default"
         size="large"
         icon={<IoMdTrash fontSize={"24px"} />}
+        aria-label="Reset data"
       />
     </Popconfirm>
   )
