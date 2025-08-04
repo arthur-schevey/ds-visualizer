@@ -40,7 +40,6 @@ const TreeFlow = () => {
         connectionMode={ConnectionMode.Loose}
         proOptions={{ hideAttribution: true }}
       >
-        <title>Binary Tree Editor</title>
         <TreeHotkeys/>
 
         {/* Header */}

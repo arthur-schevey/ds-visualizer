@@ -3,6 +3,8 @@ import type { GraphNode, GraphEdge } from "@graph/types";
 import {
   type NodeChange,
   applyNodeChanges,
+  type EdgeChange,
+  applyEdgeChanges,
   type Connection,
   addEdge,
   MarkerType,
@@ -39,7 +41,16 @@ export function useGraphFlowHandlers() {
     [setNodes, setEdges] // minimal stable deps
   );
 
-  // Callback from React Flow to handle edge deletion
+  // Callback for React Flow to handle adding, deleting, selecting edges
+  const handleEdgesChange = useCallback(
+    (changes: EdgeChange<GraphEdge>[]) => {
+      setEdges((edges) => applyEdgeChanges(changes, edges));
+    },
+    [setEdges]
+  );
+
+  // Callback for React Flow to handle edge deletion
+  // Note: This may not be necessary since deletion is handled by handleEdgesChange and handleNodesDelete
   const handleEdgesDelete = useCallback(
     (deleted: GraphEdge[]) => {
       const deletedIds = new Set(deleted.map((e) => e.id));
@@ -48,7 +59,7 @@ export function useGraphFlowHandlers() {
     [setEdges]
   );
 
-  // Callback from React Flow to handle successful drag connections
+  // Callback for React Flow to handle successful drag connections
   const handleConnect = useCallback(
     (connection: Connection) => {
       const directed = useGraphStore.getState().directed;
@@ -80,6 +91,7 @@ export function useGraphFlowHandlers() {
   return {
     handleNodesChange,
     handleNodesDelete,
+    handleEdgesChange,
     handleEdgesDelete,
     handleConnect,
   };

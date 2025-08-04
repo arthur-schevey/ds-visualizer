@@ -36,6 +36,7 @@ const GraphFlowInner = () => {
   const {
     handleNodesChange,
     handleNodesDelete,
+    handleEdgesChange,
     handleEdgesDelete,
     handleConnect,
   } = useGraphFlowHandlers();
@@ -74,14 +75,14 @@ const GraphFlowInner = () => {
       onDoubleClick={handleCanvasDoubleClick}
       onNodesChange={handleNodesChange}
       onNodesDelete={handleNodesDelete}
-      onEdgesDelete={handleEdgesDelete}
+      onEdgesChange={handleEdgesChange}
+      // onEdgesDelete={handleEdgesDelete}
       onConnect={handleConnect}
       connectionDragThreshold={10}
       connectionLineComponent={GraphConnectionLine}
       proOptions={{ hideAttribution: true }}
       nodeOrigin={[0.5, 0.5]}
     >
-      <title>Graph Editor</title>
       <GraphHotkeys/>
 
       {/* Background */}
